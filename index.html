@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscriptions Tremplins SUP - Saint Victor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #003d7a;
+            --secondary: #d84aa8;
+            --accent-orange: #f39c12;
+            --accent-cyan: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #2c3e50;
+            --text: #333;
+            --border: #ddd;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--light);
+            color: var(--text);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background: #1a1a1a;
+            color: #f0f0f0;
+            --light: #222;
+            --text: #f0f0f0;
+            --border: #444;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 61, 122, 0.3);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+        }
+
+        .header-title h1 {
+            font-size: 22px;
+            margin-bottom: 2px;
+        }
+
+        .header-title p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* BROCHURES BAR */
+        .brochures-bar {
+            background: white;
+            padding: 12px 20px;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        body.dark-mode .brochures-bar {
+            background: #222;
+            border-bottom-color: #555;
+        }
+
+        .brochure-pills {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .brochure-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            background: white;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        body.dark-mode .brochure-btn {
+            background: #333;
+        }
+
+        .brochure-btn:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .theme-switch {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .theme-switch:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-login {
+            background: white;
+            color: var(--primary);
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 13px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* MAIN CONTAINER */
+        .container {
+            max-width: 700px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        body.dark-mode .container {
+            background: #222;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .progress-bar {
+            display: flex;
+            height: 4px;
+            background: var(--border);
+        }
+
+        .progress-bar div {
+            background: linear-gradient(90deg, var(--secondary), var(--accent-orange));
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        main {
+            padding: 40px 30px;
+            min-height: 400px;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .screen h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        body.dark-mode .screen h2 {
+            -webkit-text-fill-color: unset;
+            color: var(--accent-cyan);
+        }
+
+        .screen > p:first-of-type {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        body.dark-mode .screen > p:first-of-type {
+            color: #aaa;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary);
+            font-size: 14px;
+        }
+
+        body.dark-mode label {
+            color: var(--accent-cyan);
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            background: white;
+            color: var(--text);
+            transition: border-color 0.3s;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        body.dark-mode input[type="text"],
+        body.dark-mode input[type="email"],
+        body.dark-mode input[type="tel"],
+        body.dark-mode textarea,
+        body.dark-mode select {
+            background: #333;
+            color: #f0f0f0;
+            border-color: #555;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(216, 74, 168, 0.1);
+        }
+
+        input.error {
+            border-color: #e74c3c;
+        }
+
+        .error-msg {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .error-msg.show {
+            display: block;
+        }
+
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-item,
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px;
+            border: 2px solid var(--light);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--light);
+        }
+
+        body.dark-mode .radio-item,
+        body.dark-mode .checkbox-item {
+            background: #333;
+            border-color: #555;
+        }
+
+        .radio-item:hover,
+        .checkbox-item:hover {
+            border-color: var(--secondary);
+            background: rgba(216, 74, 168, 0.05);
+        }
+
+        body.dark-mode .radio-item:hover,
+        body.dark-mode .checkbox-item:hover {
+            background: rgba(216, 74, 168, 0.15);
+        }
+
+        .radio-item input[type="radio"],
+        .checkbox-item input[type="checkbox"] {
+            margin-top: 3px;
+            cursor: pointer;
+            accent-color: var(--secondary);
+        }
+
+        .radio-item.selected,
+        .checkbox-item.selected {
+            background: rgba(216, 74, 168, 0.1);
+            border-color: var(--secondary);
+        }
+
+        body.dark-mode .radio-item.selected,
+        body.dark-mode .checkbox-item.selected {
+            background: rgba(216, 74, 168, 0.2);
+        }
+
+        .radio-label,
+        .checkbox-label {
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .radio-label strong,
+        .checkbox-label strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--primary);
+        }
+
+        body.dark-mode .radio-label strong,
+        body.dark-mode .checkbox-label strong {
+            color: var(--accent-cyan);
+        }
+
+        .radio-label small,
+        .checkbox-label small {
+            color: #666;
+            font-size: 13px;
+        }
+
+        body.dark-mode .radio-label small,
+        body.dark-mode .checkbox-label small {
+            color: #aaa;
+        }
+
+        .hidden-group {
+            display: none;
+        }
+
+        .hidden-group.show {
+            display: block;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary), var(--accent-orange));
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(216, 74, 168, 0.3);
+        }
+
+        .btn-primary:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            flex: 0.3;
+        }
+
+        body.dark-mode .btn-secondary {
+            background: #333;
+            color: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        body.dark-mode .btn-secondary:hover {
+            background: var(--accent-cyan);
+            color: #1a1a1a;
+        }
+
+        .brochures-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(0, 61, 122, 0.05), rgba(216, 74, 168, 0.05));
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        body.dark-mode .brochures-section {
+            background: linear-gradient(135deg, rgba(0, 61, 122, 0.2), rgba(216, 74, 168, 0.2));
+        }
+
+        .brochures-section h3 {
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        body.dark-mode .brochures-section h3 {
+            color: var(--accent-cyan);
+        }
+
+        .brochure-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .brochure-btn {
+            display: inline-block;
+            padding: 8px 14px;
+            background: white;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        body.dark-mode .brochure-btn {
+            background: #333;
+        }
+
+        .brochure-btn:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .success-screen {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .success-screen h2 {
+            color: #27ae60;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .success-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+            background: rgba(23, 162, 184, 0.1);
+            border-left: 4px solid var(--accent-cyan);
+            padding: 12px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        body.dark-mode .info-box {
+            background: rgba(23, 162, 184, 0.2);
+            color: #aaa;
+        }
+
+        .tarif-display {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .footer-timestamp {
+            text-align: center;
+            font-size: 11px;
+            color: #999;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        body.dark-mode .footer-timestamp {
+            color: #666;
+            border-top-color: #555;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .header-left {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .container {
+                margin: 15px;
+                border-radius: 0;
+            }
+
+            main {
+                padding: 25px 20px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn-secondary {
+                flex: 1;
+            }
+
+            .brochure-pills {
+                gap: 6px;
+            }
+
+            .brochure-btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <div class="logo-container">
+                <svg class="logo-img" viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Texte "Saint Victor Lycée" -->
+                    <text x="15" y="45" font-size="36" font-weight="bold" fill="white" font-family="Arial, sans-serif">Saint</text>
+                    <text x="15" y="85" font-size="36" font-weight="bold" fill="white" font-family="Arial, sans-serif">Victor</text>
+                    <text x="30" y="110" font-size="18" fill="white" font-family="Arial, sans-serif">Lycée</text>
+
+                    <!-- Bandes colorées à droite -->
+                    <ellipse cx="230" cy="20" rx="50" ry="8" fill="#f39c12"/>
+                    <ellipse cx="235" cy="35" rx="50" ry="8" fill="#d84aa8"/>
+                    <ellipse cx="230" cy="50" rx="50" ry="8" fill="#8e44ad"/>
+                    <ellipse cx="235" cy="65" rx="50" ry="8" fill="#3498db"/>
+                    <ellipse cx="230" cy="80" rx="50" ry="8" fill="#17a2b8"/>
+                    <ellipse cx="235" cy="95" rx="50" ry="8" fill="#5dade2"/>
+
+                    <!-- Tronc -->
+                    <rect x="225" y="105" width="20" height="15" fill="#003d7a"/>
+                </svg>
+            </div>
+            <div class="header-title">
+                <h1>Tremplins SUP</h1>
+                <p>Saint Victor - Objectif Sup</p>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <button class="theme-switch" onclick="toggleTheme()">🌙 Mode sombre</button>
+            <button class="btn-login" onclick="goToDashboard()">👤 Espace Personnel</button>
+        </div>
+    </header>
+
+    <!-- BROCHURES BAR -->
+    <div class="brochures-bar">
+        <div class="brochure-pills">
+            <button class="brochure-btn" onclick="downloadBrochure('PASS')">📄 Brochure PASS</button>
+            <button class="brochure-btn" onclick="downloadBrochure('Déclic')">📄 Brochure Déclic</button>
+            <button class="brochure-btn" onclick="downloadBrochure('INGE')">📄 Brochure INGE</button>
+            <button class="brochure-btn" onclick="downloadBrochure('PEPS')">📄 Brochure PEPS</button>
+            <button class="brochure-btn" onclick="downloadBrochure('planning')">📅 Planning 2026-2027</button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="container">
+        <div class="progress-bar"><div id="progressFill" style="width: 20%;"></div></div>
+
+        <main>
+            <!-- ÉCRAN 1: CHOIX DU DISPOSITIF -->
+            <div class="screen active" data-screen="1">
+                <h2>Quel tremplin vous intéresse ?</h2>
+                <p>Choisissez le dispositif qui correspond à votre profil.</p>
+
+                <div class="form-group">
+                    <label>Sélectionnez votre dispositif <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="dispositif" value="PASS" data-tarif="600" data-niveau="both" data-lycee="yes">
+                            <div class="radio-label">
+                                <strong id="pass-tariff">PASS (600€)</strong>
+                                <small>Saint Victor & lycées partenaires : 500€ | Autres : 600€</small>
+                            </div>
+                        </label>
+
+                        <label class="radio-item">
+                            <input type="radio" name="dispositif" value="Déclic Sciences PO" data-tarif="250" data-niveau="both" data-lycee="no">
+                            <div class="radio-label">
+                                <strong>Déclic Sciences PO (250€)</strong>
+                                <small>1ère et Terminale - Élèves Saint Victor</small>
+                            </div>
+                        </label>
+
+                        <label class="radio-item">
+                            <input type="radio" name="dispositif" value="Tremplin INGE" data-tarif="300" data-niveau="term" data-lycee="no">
+                            <div class="radio-label">
+                                <strong>Tremplin INGE (300€)</strong>
+                                <small>Terminale - Élèves Saint Victor</small>
+                            </div>
+                        </label>
+
+                        <label class="radio-item">
+                            <input type="radio" name="dispositif" value="Tremplin PEPS" data-tarif="150" data-niveau="term" data-lycee="no">
+                            <div class="radio-label">
+                                <strong>Tremplin PEPS (150€)</strong>
+                                <small>Terminale - Élèves Saint Victor</small>
+                            </div>
+                        </label>
+
+                        <label class="radio-item" style="opacity: 0.5; cursor: not-allowed;">
+                            <input type="radio" name="dispositif" value="Tremplin Eloquence" disabled>
+                            <div class="radio-label">
+                                <strong>Tremplin Eloquence (150€)</strong>
+                                <small>À venir - Contenu en cours de finalisation</small>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button class="btn-primary" onclick="goToScreen(2)">Suivant →</button>
+                </div>
+            </div>
+
+            <!-- ÉCRAN 2: INFOS ÉLÈVE (dynamique) -->
+            <div class="screen" data-screen="2">
+                <h2>Informations de l'élève</h2>
+                <p>Complétez vos informations personnelles.</p>
+
+                <div class="form-group">
+                    <label for="nom">Nom et Prénom de l'élève <span class="required">*</span></label>
+                    <input type="text" id="nom" name="nom" placeholder="Dupont Jean">
+                    <div class="error-msg">Veuillez entrer votre nom et prénom</div>
+                </div>
+
+                <div class="form-group hidden-group" id="group-lycee">
+                    <label for="lycee">Lycée d'origine <span class="required">*</span></label>
+                    <select id="lycee" name="lycee">
+                        <option value="">-- Sélectionnez un lycée --</option>
+                        <option value="Saint Victor">Saint Victor</option>
+                        <option value="Chabrillan">Chabrillan (lycée partenaire)</option>
+                        <option value="Sacré Cœur Privas">Sacré Cœur Privas</option>
+                        <option value="Sacré Cœur Tournon">Sacré Cœur Tournon</option>
+                        <option value="IND">IND</option>
+                        <option value="Bourg Saint Andéol">Bourg Saint Andéol (lycée partenaire)</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                    <div class="error-msg">Veuillez sélectionner un lycée</div>
+                </div>
+
+                <div class="form-group hidden-group" id="group-autre-lycee" style="display: none;">
+                    <label for="autre-lycee">Nom de votre lycée <span class="required">*</span></label>
+                    <input type="text" id="autre-lycee" name="autre-lycee" placeholder="Entrez le nom de votre établissement">
+                    <div class="error-msg">Veuillez entrer le nom de votre lycée</div>
+                </div>
+
+                <div class="form-group hidden-group" id="group-niveau">
+                    <label>Niveau <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="niveau" value="1ère">
+                            <div class="radio-label"><strong>1ère</strong></div>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="niveau" value="Terminale">
+                            <div class="radio-label"><strong>Terminale</strong></div>
+                        </label>
+                    </div>
+                    <div class="error-msg">Veuillez sélectionner votre niveau</div>
+                </div>
+
+                <div class="form-group hidden-group" id="group-pass-1ere" style="display: none;">
+                    <label>Avez-vous participé au PASS en 1ère l'année dernière ? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="pass-precedent" value="Oui">
+                            <div class="radio-label"><strong>Oui</strong></div>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="pass-precedent" value="Non">
+                            <div class="radio-label"><strong>Non</strong></div>
+                        </label>
+                    </div>
+                    <div class="error-msg">Veuillez répondre à cette question</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email de l'élève <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" placeholder="jean@example.com">
+                    <div class="error-msg">Veuillez entrer un email valide</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="telephone">Téléphone portable de l'élève <span class="required">*</span></label>
+                    <input type="tel" id="telephone" name="telephone" placeholder="06 12 34 56 78">
+                    <div class="error-msg">Veuillez entrer un numéro valide (10 chiffres)</div>
+                </div>
+
+                <div class="buttons">
+                    <button class="btn-secondary" onclick="goToScreen(1)">← Retour</button>
+                    <button class="btn-primary" onclick="goToScreen(3)">Suivant →</button>
+                </div>
+            </div>
+
+            <!-- ÉCRAN 3: INFOS PARENT -->
+            <div class="screen" data-screen="3">
+                <h2>Informations du responsable</h2>
+                <p>Données de contact du parent ou tuteur.</p>
+
+                <div class="form-group">
+                    <label for="parent-nom">Nom et Prénom du parent <span class="required">*</span></label>
+                    <input type="text" id="parent-nom" name="parent-nom" placeholder="Dupont Marie">
+                    <div class="error-msg">Veuillez entrer le nom du parent</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="adresse">Adresse de résidence <span class="required">*</span></label>
+                    <input type="text" id="adresse" name="adresse" placeholder="123 Rue de la Paix">
+                    <div class="error-msg">Veuillez entrer une adresse</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="tel-parent">Téléphone du parent <span class="required">*</span></label>
+                    <input type="tel" id="tel-parent" name="tel-parent" placeholder="06 12 34 56 78">
+                    <div class="error-msg">Veuillez entrer un numéro valide</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email-parent">Email du parent <span class="required">*</span></label>
+                    <input type="email" id="email-parent" name="email-parent" placeholder="marie@example.com">
+                    <div class="error-msg">Veuillez entrer un email valide</div>
+                </div>
+
+                <div class="buttons">
+                    <button class="btn-secondary" onclick="goToScreen(2)">← Retour</button>
+                    <button class="btn-primary" onclick="goToScreen(4)">Suivant →</button>
+                </div>
+            </div>
+
+            <!-- ÉCRAN 4: ENGAGEMENT & RÈGLEMENT -->
+            <div class="screen" data-screen="4">
+                <h2>Engagement et modalités</h2>
+                <p>Confirmez votre engagement et choisissez votre mode de paiement.</p>
+
+                <div class="tarif-display" id="tarif-display">
+                    Montant de l'inscription : <span id="tarif-amount">--</span>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 15px;">Informations médicales</h3>
+                <p style="margin-bottom: 20px; font-size: 14px; color: #666;">Pour votre sécurité et celle de nos équipes, veuillez signaler toute information médicale pertinente.</p>
+
+                <div class="form-group">
+                    <label for="allergies">Allergies</label>
+                    <textarea id="allergies" name="allergies" placeholder="Listez les allergies (alimentaires, médicaments, etc.)" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="conditions-medicales">Conditions médicales importantes</label>
+                    <textarea id="conditions-medicales" name="conditions-medicales" placeholder="Ex: asthme, épilepsie, diabète..." rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="traitement">Traitement ou médicament en cours</label>
+                    <textarea id="traitement" name="traitement" placeholder="Décrivez tout traitement régulier" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="contact-urgence">Contact en cas d'urgence médicale <span class="required">*</span></label>
+                    <input type="text" id="contact-urgence" name="contact-urgence" placeholder="Téléphone à appeler en cas d'urgence" required>
+                    <div class="error-msg">Veuillez fournir un contact d'urgence</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="consentement-rgpd" name="consentement-rgpd">
+                        <div class="checkbox-label">
+                            <small>J'autorise le lycée Saint Victor à traiter les données médicales ci-dessus exclusivement pour la sécurité et l'encadrement pédagogique de mon enfant lors du dispositif.</small>
+                        </div>
+                    </label>
+                    <div class="error-msg">Veuillez accepter le traitement des données médicales</div>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 15px;">Restauration</h3>
+
+                <div class="form-group">
+                    <label>Êtes-vous intéressé par la restauration sur site ? <span class="required">*</span></label>
+                    <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Formule cafétéria : sandwich/salade - dessert - boisson (7€/repas) | Sessions : Octobre (2j) + Février (2j) + Avril (3j, repas partagé offert le dernier jour)</p>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="restauration-interet" value="Oui" onchange="updateRestaurationOptions()">
+                            <div class="radio-label"><strong>Oui</strong></div>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="restauration-interet" value="Non" onchange="updateRestaurationOptions()">
+                            <div class="radio-label"><strong>Non</strong></div>
+                        </label>
+                    </div>
+                    <div class="error-msg">Veuillez répondre à la question restauration</div>
+                </div>
+
+                <div class="form-group" id="group-restauration-jours" style="display: none;">
+                    <label for="restauration-nb-repas">Nombre de repas souhaités <span class="required">*</span></label>
+                    <select id="restauration-nb-repas" name="restauration-nb-repas">
+                        <option value="">-- Sélectionnez --</option>
+                        <option value="1 repas">1 repas</option>
+                        <option value="2 repas">2 repas</option>
+                        <option value="3 repas">3 repas</option>
+                        <option value="4 repas">4 repas</option>
+                        <option value="5 repas">5 repas</option>
+                        <option value="6 repas">6 repas</option>
+                    </select>
+                    <div class="error-msg">Veuillez sélectionner un nombre de repas</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="engagement" name="engagement">
+                        <div class="checkbox-label">
+                            <strong>Engagement de participation</strong>
+                            <small>Je confirme l'inscription de mon enfant et m'engage à régler le montant de la formule choisie.</small>
+                        </div>
+                    </label>
+                    <div class="error-msg">Vous devez confirmer votre engagement</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Modalités de règlement <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="reglement" value="Chèque en 1 fois">
+                            <div class="radio-label">
+                                <strong>Chèque en 1 fois</strong>
+                                <small>À l'ordre de OGEC SAINT VICTOR</small>
+                            </div>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="reglement" value="Chèque en 3 fois">
+                            <div class="radio-label">
+                                <strong>Chèque en 3 fois</strong>
+                                <small>À l'ordre de OGEC SAINT VICTOR</small>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="error-msg">Veuillez choisir un mode de règlement</div>
+                </div>
+
+                <div class="buttons">
+                    <button class="btn-secondary" onclick="goToScreen(3)">← Retour</button>
+                    <button class="btn-primary" onclick="submitForm()">✓ Envoyer</button>
+                </div>
+            </div>
+
+            <!-- ÉCRAN 5: CONFIRMATION -->
+            <div class="screen" data-screen="5">
+                <div class="success-screen">
+                    <div class="success-icon">✓</div>
+                    <h2>Inscription enregistrée !</h2>
+                    <p>Merci pour votre inscription.</p>
+                    <p>Un email de confirmation vous a été envoyé à <strong id="confirm-email">--</strong></p>
+                    <div class="info-box">
+                        <strong>Prochaine étape :</strong><br>
+                        Le lycée vous contactera prochainement pour les modalités de participation à la 1ère session du Tremplin.
+                    </div>
+                    <button class="btn-primary" onclick="location.reload()" style="margin-top: 20px;">+ Inscrire un autre élève</button>
+                </div>
+            </div>
+
+            <div class="footer-timestamp">
+                Dernière mise à jour : <span id="timestamp">--:--</span>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let formData = {};
+        const tarifs = {
+            'PASS': 500,
+            'Déclic Sciences PO': 250,
+            'Tremplin INGE': 300,
+            'Tremplin PEPS': 150
+        };
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+            updateThemeButton();
+        }
+
+        function updateThemeButton() {
+            const btn = document.querySelector('.theme-switch');
+            btn.textContent = document.body.classList.contains('dark-mode') ? '☀️ Mode clair' : '🌙 Mode sombre';
+        }
+
+        function goToDashboard() {
+            window.location.href = './dashboard.html';
+        }
+
+        function updatePASSTariff() {
+            const passRadio = document.querySelector('input[name="dispositif"][value="PASS"]');
+            const passLabel = document.getElementById('pass-tariff');
+            const lyceeSelect = document.getElementById('lycee');
+
+            const selectedLycee = lyceeSelect.value;
+            const partnersAndHome = ['Saint Victor', 'Chabrillan', 'Bourg Saint Andéol'];
+            const isPaid500 = partnersAndHome.includes(selectedLycee);
+
+            const tarif = isPaid500 ? 500 : 600;
+            if (passRadio) {
+                passLabel.textContent = `PASS (${tarif}€)`;
+                passRadio.dataset.tarif = tarif;
+            }
+
+            // Mettre à jour formData pour le tarif
+            if (passRadio.checked) {
+                formData.tarif = tarif;
+            }
+        }
+
+        function handleLyceeChange() {
+            const lyceeSelect = document.getElementById('lycee');
+            const autreLyceeGroup = document.getElementById('group-autre-lycee');
+            const autreLyceeInput = document.getElementById('autre-lycee');
+
+            if (lyceeSelect.value === 'Autre') {
+                autreLyceeGroup.style.display = 'block';
+            } else {
+                autreLyceeGroup.style.display = 'none';
+                autreLyceeInput.value = '';
+            }
+
+            updatePASSTariff();
+        }
+
+        function updateRestaurationOptions() {
+            const interet = document.querySelector('input[name="restauration-interet"]:checked');
+            const joursGroup = document.getElementById('group-restauration-jours');
+
+            if (interet && interet.value === 'Oui') {
+                joursGroup.style.display = 'block';
+            } else {
+                joursGroup.style.display = 'none';
+                document.getElementById('restauration-nb-repas').value = '';
+            }
+        }
+
+        function updateTarifDisplay() {
+            const selectedRadio = document.querySelector('input[name="dispositif"]:checked');
+            if (!selectedRadio) return;
+
+            let tarif = parseInt(selectedRadio.dataset.tarif) || 0;
+            const dispositif = selectedRadio.value;
+
+            // Pour le PASS, recalculer en fonction du lycée
+            if (dispositif === 'PASS') {
+                const lyceeSelect = document.getElementById('lycee');
+                const selectedLycee = lyceeSelect.value;
+                const partnersAndHome = ['Saint Victor', 'Chabrillan', 'Bourg Saint Andéol'];
+                tarif = partnersAndHome.includes(selectedLycee) ? 500 : 600;
+            }
+
+            document.getElementById('tarif-amount').textContent = tarif + '€';
+        }
+
+        function updatePassPrecedentDisplay() {
+            const dispositif = document.querySelector('input[name="dispositif"]:checked');
+            const isPASS = dispositif && dispositif.value === 'PASS';
+            const isTerminalSelected = document.querySelector('input[name="niveau"]:checked')?.value === 'Terminale';
+
+            document.getElementById('group-pass-1ere').style.display = isPASS && isTerminalSelected ? 'block' : 'none';
+            if (!isTerminalSelected) {
+                document.querySelectorAll('input[name="pass-precedent"]').forEach(radio => radio.checked = false);
+            }
+        }
+
+        function goToScreen(num) {
+            // Valider l'écran actuel avant de passer au suivant
+            const currentScreen = document.querySelector('.screen.active');
+            if (currentScreen && !validateCurrentScreen()) {
+                return;
+            }
+
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelector(`[data-screen="${num}"]`).classList.add('active');
+            document.getElementById('progressFill').style.width = (num / 5 * 100) + '%';
+            updateFieldsForScreen(num);
+            if (num === 4) {
+                updateTarifDisplay();
+            }
+            window.scrollTo(0, 0);
+        }
+
+        function validateCurrentScreen() {
+            const currentScreenNum = document.querySelector('.screen.active').dataset.screen;
+            const errors = [];
+
+            if (currentScreenNum === '1') {
+                const dispositif = document.querySelector('input[name="dispositif"]:checked');
+                if (!dispositif) {
+                    errors.push('Veuillez sélectionner un dispositif');
+                }
+            } else if (currentScreenNum === '2') {
+                // Nom obligatoire
+                if (!document.getElementById('nom').value.trim()) {
+                    document.getElementById('nom').classList.add('error');
+                    errors.push('Nom obligatoire');
+                } else {
+                    document.getElementById('nom').classList.remove('error');
+                }
+
+                // Lycée obligatoire si visible
+                if (document.getElementById('group-lycee').classList.contains('show')) {
+                    if (!document.getElementById('lycee').value) {
+                        document.getElementById('lycee').classList.add('error');
+                        errors.push('Lycée obligatoire');
+                    } else {
+                        document.getElementById('lycee').classList.remove('error');
+                    }
+
+                    // Si "Autre" est sélectionné, vérifier le champ texte
+                    if (document.getElementById('lycee').value === 'Autre') {
+                        if (!document.getElementById('autre-lycee').value.trim()) {
+                            document.getElementById('autre-lycee').classList.add('error');
+                            errors.push('Veuillez entrer le nom de votre lycée');
+                        } else {
+                            document.getElementById('autre-lycee').classList.remove('error');
+                        }
+                    }
+                }
+
+                // Niveau obligatoire si visible
+                if (document.getElementById('group-niveau').classList.contains('show')) {
+                    if (!document.querySelector('input[name="niveau"]:checked')) {
+                        document.querySelector('#group-niveau .radio-group').style.borderColor = '#e74c3c';
+                        errors.push('Niveau obligatoire');
+                    } else {
+                        document.querySelector('#group-niveau .radio-group').style.borderColor = 'inherit';
+                    }
+                }
+
+                // Question PASS en 1ère obligatoire si affichée
+                if (document.getElementById('group-pass-1ere').style.display !== 'none') {
+                    if (!document.querySelector('input[name="pass-precedent"]:checked')) {
+                        errors.push('Veuillez répondre à la question sur le PASS en 1ère');
+                    }
+                }
+
+                // Email obligatoire
+                if (!document.getElementById('email').value.trim()) {
+                    document.getElementById('email').classList.add('error');
+                    errors.push('Email obligatoire');
+                } else if (!isValidEmail(document.getElementById('email').value)) {
+                    document.getElementById('email').classList.add('error');
+                    errors.push('Email invalide');
+                } else {
+                    document.getElementById('email').classList.remove('error');
+                }
+
+                // Téléphone obligatoire
+                if (!document.getElementById('telephone').value.trim()) {
+                    document.getElementById('telephone').classList.add('error');
+                    errors.push('Téléphone obligatoire');
+                } else if (!isValidPhone(document.getElementById('telephone').value)) {
+                    document.getElementById('telephone').classList.add('error');
+                    errors.push('Téléphone invalide (10 chiffres)');
+                } else {
+                    document.getElementById('telephone').classList.remove('error');
+                }
+
+            } else if (currentScreenNum === '3') {
+                // Nom parent obligatoire
+                if (!document.getElementById('parent-nom').value.trim()) {
+                    document.getElementById('parent-nom').classList.add('error');
+                    errors.push('Nom du parent obligatoire');
+                } else {
+                    document.getElementById('parent-nom').classList.remove('error');
+                }
+
+                // Adresse obligatoire
+                if (!document.getElementById('adresse').value.trim()) {
+                    document.getElementById('adresse').classList.add('error');
+                    errors.push('Adresse obligatoire');
+                } else {
+                    document.getElementById('adresse').classList.remove('error');
+                }
+
+                // Téléphone parent obligatoire
+                if (!document.getElementById('tel-parent').value.trim()) {
+                    document.getElementById('tel-parent').classList.add('error');
+                    errors.push('Téléphone parent obligatoire');
+                } else if (!isValidPhone(document.getElementById('tel-parent').value)) {
+                    document.getElementById('tel-parent').classList.add('error');
+                    errors.push('Téléphone parent invalide');
+                } else {
+                    document.getElementById('tel-parent').classList.remove('error');
+                }
+
+                // Email parent obligatoire
+                if (!document.getElementById('email-parent').value.trim()) {
+                    document.getElementById('email-parent').classList.add('error');
+                    errors.push('Email parent obligatoire');
+                } else if (!isValidEmail(document.getElementById('email-parent').value)) {
+                    document.getElementById('email-parent').classList.add('error');
+                    errors.push('Email parent invalide');
+                } else {
+                    document.getElementById('email-parent').classList.remove('error');
+                }
+
+            } else if (currentScreenNum === '4') {
+                // Contact d'urgence obligatoire
+                if (!document.getElementById('contact-urgence').value.trim()) {
+                    document.getElementById('contact-urgence').classList.add('error');
+                    errors.push('Contact d\'urgence médical obligatoire');
+                } else {
+                    document.getElementById('contact-urgence').classList.remove('error');
+                }
+
+                // Consentement RGPD obligatoire
+                if (!document.getElementById('consentement-rgpd').checked) {
+                    errors.push('Veuillez accepter le traitement des données médicales');
+                }
+
+                // Restauration intéressé obligatoire
+                if (!document.querySelector('input[name="restauration-interet"]:checked')) {
+                    errors.push('Veuillez répondre à la question restauration');
+                }
+
+                // Si restauration = Oui, nombre de repas obligatoire
+                const restaInteret = document.querySelector('input[name="restauration-interet"]:checked');
+                if (restaInteret && restaInteret.value === 'Oui') {
+                    if (!document.getElementById('restauration-nb-repas').value) {
+                        document.getElementById('restauration-nb-repas').classList.add('error');
+                        errors.push('Veuillez sélectionner un nombre de repas');
+                    } else {
+                        document.getElementById('restauration-nb-repas').classList.remove('error');
+                    }
+                }
+
+                // Engagement obligatoire
+                if (!document.getElementById('engagement').checked) {
+                    errors.push('Veuillez confirmer votre engagement');
+                }
+
+                // Mode de règlement obligatoire
+                if (!document.querySelector('input[name="reglement"]:checked')) {
+                    errors.push('Veuillez choisir un mode de règlement');
+                }
+            }
+
+            if (errors.length > 0) {
+                alert('❌ ' + errors.join('\n'));
+                return false;
+            }
+
+            return true;
+        }
+
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function isValidPhone(phone) {
+            const digits = phone.replace(/\D/g, '');
+            return digits.length === 10;
+        }
+
+        function updateFieldsForScreen(screen) {
+            if (screen === 2) {
+                const dispositif = document.querySelector('input[name="dispositif"]:checked');
+                if (dispositif) {
+                    const lycee = dispositif.dataset.lycee === 'yes';
+                    const niveau = dispositif.dataset.niveau !== 'none';
+                    const isTermOnly = dispositif.dataset.niveau === 'term';
+
+                    document.getElementById('group-lycee').classList.toggle('show', lycee);
+                    document.getElementById('group-niveau').classList.toggle('show', niveau);
+
+                    // Désactiver "1ère" si INGE ou PEPS (Terminale only)
+                    const option1ere = document.querySelector('input[name="niveau"][value="1ère"]');
+                    const optionTerm = document.querySelector('input[name="niveau"][value="Terminale"]');
+
+                    if (isTermOnly) {
+                        option1ere.disabled = true;
+                        option1ere.parentElement.style.opacity = '0.5';
+                        option1ere.parentElement.style.pointerEvents = 'none';
+                        optionTerm.checked = true;
+                    } else {
+                        option1ere.disabled = false;
+                        option1ere.parentElement.style.opacity = '1';
+                        option1ere.parentElement.style.pointerEvents = 'auto';
+                    }
+
+                    // Afficher la question "PASS en 1ère" si PASS + Terminale sélectionné
+                    const isPASS = dispositif.value === 'PASS';
+                    const isTerminalSelected = document.querySelector('input[name="niveau"]:checked')?.value === 'Terminale';
+                    document.getElementById('group-pass-1ere').style.display = isPASS && isTerminalSelected ? 'block' : 'none';
+
+                    // Ajouter event listener au changement de niveau pour mettre à jour l'affichage
+                    document.querySelectorAll('input[name="niveau"]').forEach(radio => {
+                        radio.removeEventListener('change', updatePassPrecedentDisplay);
+                        radio.addEventListener('change', updatePassPrecedentDisplay);
+                    });
+                }
+            } else if (screen === 4) {
+                const tarif = getTarif();
+                document.getElementById('tarif-amount').textContent = tarif ? tarif + '€' : '--';
+            }
+        }
+
+        function getTarif() {
+            const dispositif = document.querySelector('input[name="dispositif"]:checked');
+            if (!dispositif) return null;
+
+            if (dispositif.value === 'PASS') {
+                const lyceeSelect = document.getElementById('lycee');
+                const selectedLycee = lyceeSelect.value;
+                const partnersAndHome = ['Saint Victor', 'Chabrillan', 'Bourg Saint Andéol'];
+                return partnersAndHome.includes(selectedLycee) ? 500 : 600;
+            }
+
+            return tarifs[dispositif.value] || null;
+        }
+
+        function submitForm() {
+            const engagement = document.getElementById('engagement').checked;
+            const reglement = document.querySelector('input[name="reglement"]:checked');
+
+            if (!engagement || !reglement) {
+                alert('Veuillez confirmer votre engagement et choisir un mode de règlement');
+                return;
+            }
+
+            formData.engagement = 'Oui';
+            formData.modePaiement = reglement.value;
+
+            sendToAppsScript();
+        }
+
+        function sendToAppsScript() {
+            const url = 'https://script.google.com/macros/s/AKfycbyte-A6Tz7t9e5WxLFv9_HMBoFnwowPDP81hOLquWnNg0d0uN_M_FJWu0GODL1KZsW8EA/exec';
+
+            const params = new URLSearchParams();
+            params.append('dispositif', formData.dispositif || document.querySelector('input[name="dispositif"]:checked')?.value || '');
+            params.append('nom', document.getElementById('nom')?.value || '');
+            const lycee = document.getElementById('lycee')?.value || '';
+            params.append('lycee', lycee === 'Autre' ? document.getElementById('autre-lycee')?.value || '' : lycee);
+            params.append('niveau', document.querySelector('input[name="niveau"]:checked')?.value || '');
+            params.append('passPrecedent', document.querySelector('input[name="pass-precedent"]:checked')?.value || '');
+            params.append('email', document.getElementById('email')?.value || '');
+            params.append('telephone', document.getElementById('telephone')?.value || '');
+            params.append('parentNom', document.getElementById('parent-nom')?.value || '');
+            params.append('adresse', document.getElementById('adresse')?.value || '');
+            params.append('parentTelephone', document.getElementById('tel-parent')?.value || '');
+            params.append('parentEmail', document.getElementById('email-parent')?.value || '');
+            params.append('allergies', document.getElementById('allergies')?.value || '');
+            params.append('conditionsMedicales', document.getElementById('conditions-medicales')?.value || '');
+            params.append('traitement', document.getElementById('traitement')?.value || '');
+            params.append('contactUrgence', document.getElementById('contact-urgence')?.value || '');
+            params.append('consentementRGPD', document.getElementById('consentement-rgpd')?.checked ? 'Oui' : 'Non');
+            params.append('restaurationInteret', document.querySelector('input[name="restauration-interet"]:checked')?.value || '');
+            params.append('restaurationNbRepas', document.getElementById('restauration-nb-repas')?.value || '');
+            params.append('engagement', formData.engagement || '');
+            params.append('modePaiement', formData.modePaiement || '');
+            params.append('tarif', getTarif() || '');
+
+            fetch(url, {
+                method: 'POST',
+                body: params
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById('confirm-email').textContent = document.getElementById('email').value;
+                    goToScreen(5);
+                } else {
+                    alert('Erreur : ' + (data.message || 'Impossible d\'enregistrer l\'inscription'));
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Erreur de connexion. Vérifiez votre connexion internet.');
+            });
+        }
+
+        function downloadBrochure(type) {
+            const files = {
+                'PASS': 'https://raw.githubusercontent.com/mikaelmichelas/tremplins/main/2025-2026_Brochure_Tremplin_PASS.pdf',
+                'Déclic': 'https://raw.githubusercontent.com/mikaelmichelas/tremplins/main/2025-2026_Brochure_Declic_Sciences_PO.pdf',
+                'INGE': 'https://raw.githubusercontent.com/mikaelmichelas/tremplins/main/2025-2026_Brochure_Tremplin_INGE.pdf',
+                'PEPS': 'https://raw.githubusercontent.com/mikaelmichelas/tremplins/main/2025-2026_Brochure_Tremplin_PEPS.pdf',
+                'planning': null  // À ajouter si le fichier existe
+            };
+
+            const url = files[type];
+            if (url) {
+                window.open(url, '_blank');
+            } else {
+                alert(`Le fichier ${type} n'est pas disponible`);
+            }
+        }
+
+        function updateTimestamp() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('timestamp').textContent = time;
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+            updateThemeButton();
+            updateTimestamp();
+            setInterval(updateTimestamp, 60000);
+
+            document.querySelectorAll('input[name="dispositif"]').forEach(el => {
+                el.addEventListener('change', () => {
+                    formData.dispositif = el.value;
+                    updatePASSTariff();
+                });
+            });
+
+            document.getElementById('lycee').addEventListener('change', handleLyceeChange);
+        });
+    </script>
+</body>
+</html>
