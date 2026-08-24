@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Inscriptions - Tremplins SUP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #003d7a;
+            --secondary: #d84aa8;
+            --light: #f8f9fa;
+            --dark: #2c3e50;
+            --text: #333;
+            --border: #ddd;
+            --success: #27ae60;
+            --warning: #f39c12;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--light);
+            color: var(--text);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background: #1a1a1a;
+            color: #f0f0f0;
+            --light: #222;
+            --text: #f0f0f0;
+            --border: #444;
+        }
+
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 20px;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-box h1 {
+            margin-bottom: 10px;
+            color: var(--primary);
+            font-size: 24px;
+        }
+
+        .login-box p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-box button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 61, 122, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 22px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .logout-btn, .theme-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover, .theme-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .content {
+            padding: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .kpi-sections {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .kpi-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .kpi-section h2 {
+            margin: 0 0 12px 0;
+            font-size: 16px;
+        }
+
+        .kpi-section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .kpi-section-header h2 {
+            margin: 0;
+        }
+
+        .kpi-section-header::after {
+            content: '';
+            width: 1px;
+            height: 20px;
+            background: #ddd;
+        }
+
+        .kpi-total {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--success);
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        #financialKpis {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .kpi-card {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--secondary);
+        }
+
+        body.dark-mode .kpi-card {
+            background: #2a2a2a;
+        }
+
+        .kpi-card h3 {
+            font-size: 10px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        body.dark-mode .kpi-card h3 {
+            color: #aaa;
+        }
+
+        .kpi-card .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 4px 0;
+        }
+
+        .filters {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        body.dark-mode .filters {
+            background: #2a2a2a;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        body.dark-mode .filter-group label {
+            color: var(--secondary);
+        }
+
+        .filter-group input, .filter-group select {
+            padding: 8px 12px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            font-size: 13px;
+            min-width: 150px;
+        }
+
+        body.dark-mode .filter-group input, body.dark-mode .filter-group select {
+            background: #333;
+            color: #f0f0f0;
+            border-color: #555;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+        }
+
+        .btn-secondary {
+            background: var(--warning);
+        }
+
+        .btn-secondary:hover {
+            background: #e67e22;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow-x: auto;
+        }
+
+        body.dark-mode .table-container {
+            background: #2a2a2a;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        body.dark-mode td {
+            border-bottom-color: #444;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        body.dark-mode tr:hover {
+            background: #333;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .medical-info {
+            font-size: 12px;
+            max-width: 200px;
+            word-wrap: break-word;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-oui {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-non {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN SCREEN -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <h1>🔐 Espace Admin</h1>
+            <p>Accès réservé aux responsables</p>
+            <input type="password" id="codeInput" placeholder="Code d'accès" onkeypress="if(event.key==='Enter') login()">
+            <button onclick="login()">Se connecter</button>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="dashboard" id="dashboard">
+        <header>
+            <h1>📊 Dashboard - Inscriptions Tremplins SUP</h1>
+            <div class="header-actions">
+                <button class="theme-btn" onclick="goToForm()">← Formulaire</button>
+                <button class="theme-btn" onclick="toggleTheme()">🌙 Dark</button>
+                <button class="logout-btn" onclick="logout()">Déconnexion</button>
+            </div>
+        </header>
+
+        <div class="content">
+            <!-- KPIs EN 3 COLONNES -->
+            <div class="kpi-sections">
+                <!-- COLONNE 1: INSCRIPTIONS -->
+                <div class="kpi-section">
+                    <h2 style="color: var(--primary);">Inscriptions</h2>
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <h3>Total Inscriptions</h3>
+                            <div class="value" id="totalKpi">0</div>
+                            <div style="font-size: 11px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd;">
+                                <div style="color: #666;">Restauration OUI: <strong style="color: var(--primary);" id="restaurationOuiKpi">0</strong></div>
+                                <div style="color: #666; margin-top: 3px;">Nb Repas: <strong style="color: var(--primary);" id="totalRepasKpi">0</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2 style="color: var(--primary); margin: 12px 0 12px 0; font-size: 16px;">Bilan Paiement</h2>
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <h3>Paiement Global</h3>
+                            <div style="font-size: 11px; color: #666;">
+                                <div style="margin-bottom: 8px;">
+                                    <span style="color: #27ae60; font-weight: 600;">Payé</span>: <strong id="paidCountKpi">0</strong>
+                                    <div style="font-size: 10px; color: #999; margin-top: 2px;" id="paidAmountKpi">0€</div>
+                                </div>
+                                <div style="border-top: 1px solid #eee; padding-top: 8px;">
+                                    <span style="color: #e74c3c; font-weight: 600;">Non payé</span>: <strong id="unpaidCountKpi">0</strong>
+                                    <div style="font-size: 10px; color: #999; margin-top: 2px;" id="unpaidAmountKpi">0€</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLONNE 2: BILAN FINANCIER -->
+                <div class="kpi-section">
+                    <div class="kpi-section-header">
+                        <h2 style="color: var(--primary);">Bilan Financier</h2>
+                        <div class="kpi-total" id="totalGeneralDisplay">0€</div>
+                    </div>
+                    <div class="kpi-grid" id="financialKpis"></div>
+                </div>
+
+                <!-- COLONNE 3: BILAN MEDICAL -->
+                <div class="kpi-section">
+                    <h2 style="color: var(--primary);">Bilan Médical</h2>
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <h3>Élèves avec Allergies</h3>
+                            <div class="value" id="allergiesKpi">0</div>
+                        </div>
+                        <div class="kpi-card">
+                            <h3>Conditions Médicales</h3>
+                            <div class="value" id="conditionsKpi">0</div>
+                        </div>
+                        <div class="kpi-card">
+                            <h3>Sous Traitement</h3>
+                            <div class="value" id="traitementKpi">0</div>
+                        </div>
+                        <div class="kpi-card">
+                            <h3>Contacts Urgence</h3>
+                            <div class="value" id="urgenceKpi">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FILTERS -->
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Dispositif</label>
+                    <select id="filterDispositif" onchange="applyFilters()">
+                        <option value="">Tous</option>
+                        <option value="PASS">PASS</option>
+                        <option value="Déclic Sciences PO">Déclic Sciences PO</option>
+                        <option value="Tremplin INGE">Tremplin INGE</option>
+                        <option value="Tremplin PEPS">Tremplin PEPS</option>
+                        <option value="Tremplin Eloquence">Tremplin Eloquence</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Restauration</label>
+                    <select id="filterRestauration" onchange="applyFilters()">
+                        <option value="">Tous</option>
+                        <option value="Oui">Oui</option>
+                        <option value="Non">Non</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>PASS 1ère</label>
+                    <select id="filterPass1ere" onchange="applyFilters()">
+                        <option value="">Tous</option>
+                        <option value="Oui">Oui</option>
+                        <option value="Non">Non</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Rechercher</label>
+                    <input type="text" id="searchInput" placeholder="Nom, email..." onkeyup="applyFilters()">
+                </div>
+                <div class="filter-actions">
+                    <button class="btn" onclick="loadData()">🔄 Actualiser</button>
+                    <button class="btn btn-secondary" onclick="exportToExcel()">📥 Export Excel</button>
+                </div>
+            </div>
+
+            <!-- TABLE -->
+            <div id="errorMsg" class="error" style="display: none;"></div>
+            <div id="loading" class="loading">Chargement des données...</div>
+            <div class="table-container" id="tableContainer" style="display: none;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Dispositif</th>
+                            <th>Lycée</th>
+                            <th>Niveau</th>
+                            <th>PASS 1ère</th>
+                            <th>Email</th>
+                            <th>Téléphone</th>
+                            <th>Allergies</th>
+                            <th>Remarques</th>
+                            <th>Traitement</th>
+                            <th>Urgence</th>
+                            <th>Restauration</th>
+                            <th>Nb Repas</th>
+                            <th>Mode Paiement</th>
+                            <th>Tarif</th>
+                            <th>Statut Paiement</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyte-A6Tz7t9e5WxLFv9_HMBoFnwowPDP81hOLquWnNg0d0uN_M_FJWu0GODL1KZsW8EA/exec';
+        let allData = [];
+
+        function login() {
+            const code = document.getElementById('codeInput').value;
+            if (code === 'adminsvts') {
+                localStorage.setItem('dashboardLogin', 'true');
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').classList.add('active');
+                loadData();
+            } else {
+                alert('Code incorrect');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('dashboardLogin');
+            window.location.href = './index.html';
+        }
+
+        function goToForm() {
+            window.location.href = './index.html';
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('dashboardTheme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+
+        async function loadData() {
+            try {
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('errorMsg').style.display = 'none';
+
+                const response = await fetch(APPS_SCRIPT_URL + '?action=getData');
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    allData = result.data || [];
+                    updateKPIs();
+                    applyFilters();
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('tableContainer').style.display = 'block';
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                document.getElementById('errorMsg').textContent = 'Erreur: ' + error.message;
+                document.getElementById('errorMsg').style.display = 'block';
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function updateKPIs() {
+            const total = allData.length;
+            const restaurationOui = allData.filter(r => r['Restauration'] === 'Oui').length;
+            const totalRepas = allData.reduce((sum, r) => {
+                if (r['Restauration'] === 'Oui' && r['Nb repas']) {
+                    const match = r['Nb repas'].match(/\d+/);
+                    return sum + (match ? parseInt(match[0]) : 0);
+                }
+                return sum;
+            }, 0);
+            const pass1ereOui = allData.filter(r => r['PASS 1ERE'] === 'Oui').length;
+
+            document.getElementById('totalKpi').textContent = total;
+            document.getElementById('restaurationOuiKpi').textContent = restaurationOui;
+            document.getElementById('totalRepasKpi').textContent = totalRepas;
+
+            // Paiement - normalize comparisons
+            const isPaid = (val) => val && val.trim().toLowerCase() === 'payé';
+            const paid = allData.filter(r => isPaid(r['Paiement'])).length;
+            const unpaid = allData.filter(r => !isPaid(r['Paiement'])).length;
+            const paidAmount = allData.filter(r => isPaid(r['Paiement'])).reduce((sum, r) => sum + (parseInt(r['Tarif']) || 0), 0);
+            const unpaidAmount = allData.filter(r => !isPaid(r['Paiement'])).reduce((sum, r) => sum + (parseInt(r['Tarif']) || 0), 0);
+
+            document.getElementById('paidCountKpi').textContent = paid;
+            document.getElementById('paidAmountKpi').textContent = paidAmount + '€';
+            document.getElementById('unpaidCountKpi').textContent = unpaid;
+            document.getElementById('unpaidAmountKpi').textContent = unpaidAmount + '€';
+
+
+            // KPIs Financiers
+            const dispositifs = ['PASS', 'Déclic Sciences PO', 'Tremplin INGE', 'Tremplin PEPS', 'Tremplin Eloquence'];
+            let financialHtml = '';
+            let totalGlobal = 0;
+            let totalInscritsGlobal = 0;
+
+            dispositifs.forEach(disp => {
+                const inscrits = allData.filter(r => r['Dispositif'] === disp);
+                const count = inscrits.length;
+                const total = inscrits.reduce((sum, r) => sum + (parseInt(r['Tarif']) || 0), 0);
+                totalGlobal += total;
+                totalInscritsGlobal += count;
+
+                if (count > 0) {
+                    // Calculer payé/non payé - normalize comparisons
+                    const isPaidDisp = (val) => val && val.trim().toLowerCase() === 'payé';
+                    const paid = inscrits.filter(r => isPaidDisp(r['Paiement'])).length;
+                    const unpaid = inscrits.filter(r => !isPaidDisp(r['Paiement'])).length;
+                    const paidAmount = inscrits.filter(r => isPaidDisp(r['Paiement'])).reduce((sum, r) => sum + (parseInt(r['Tarif']) || 0), 0);
+                    const unpaidAmount = inscrits.filter(r => !isPaidDisp(r['Paiement'])).reduce((sum, r) => sum + (parseInt(r['Tarif']) || 0), 0);
+
+                    let cardContent = `
+                        <div class="kpi-card">
+                            <h3>${disp}</h3>
+                            <div class="value">${total}€</div>
+                            <div style="font-size: 12px; margin-top: 6px; color: #666;">${count} inscrit${count > 1 ? 's' : ''}</div>`;
+
+                    // Ajouter détails pour PASS et Déclic (1ère/Term)
+                    if (disp === 'PASS' || disp === 'Déclic Sciences PO') {
+                        const count1ere = inscrits.filter(r => r['Niveau'] === '1ère').length;
+                        const countTerm = inscrits.filter(r => r['Niveau'] === 'Terminale').length;
+                        cardContent += `
+                            <div style="font-size: 11px; margin-top: 8px; padding-top: 8px; border-top: 1px solid #eee;">
+                                <div style="color: #666;">1ère: <strong style="color: var(--primary);">${count1ere}</strong></div>
+                                <div style="color: #666;">Term: <strong style="color: var(--primary);">${countTerm}</strong></div>`;
+
+                        // Ajouter PASS 1ère OUI pour PASS uniquement
+                        if (disp === 'PASS') {
+                            cardContent += `<div style="margin-top: 4px; color: #666;">PASS 1ère OUI: <strong style="color: var(--primary);">${pass1ereOui}</strong></div>`;
+                        }
+
+                        cardContent += `</div>`;
+                    }
+
+                    // Ajouter paiement
+                    cardContent += `
+                        <div style="font-size: 9px; margin-top: 8px; padding-top: 8px; border-top: 1px solid #eee;">
+                            <div style="color: #27ae60; margin-bottom: 2px;">✓ ${paid} (${paidAmount}€)</div>
+                            <div style="color: #e74c3c;">✗ ${unpaid} (${unpaidAmount}€)</div>
+                        </div>
+                    `;
+
+                    cardContent += `</div>`;
+                    financialHtml += cardContent;
+                }
+            });
+
+            document.getElementById('financialKpis').innerHTML = financialHtml;
+            document.getElementById('totalGeneralDisplay').textContent = totalGlobal + '€';
+
+            // KPIs Médicaux
+            const allergies = allData.filter(r => r['Allergie'] && String(r['Allergie']).trim().length > 0).length;
+            const conditions = allData.filter(r => r['Remarques'] && String(r['Remarques']).trim().length > 0).length;
+            const traitement = allData.filter(r => r['Traitement'] && String(r['Traitement']).trim().length > 0).length;
+            const urgence = allData.filter(r => r['Urgence'] && String(r['Urgence']).trim().length > 0).length;
+
+            document.getElementById('allergiesKpi').textContent = allergies;
+            document.getElementById('conditionsKpi').textContent = conditions;
+            document.getElementById('traitementKpi').textContent = traitement;
+            document.getElementById('urgenceKpi').textContent = urgence;
+        }
+
+        function applyFilters() {
+            const dispositif = document.getElementById('filterDispositif').value;
+            const restauration = document.getElementById('filterRestauration').value;
+            const pass1ere = document.getElementById('filterPass1ere').value;
+            const search = document.getElementById('searchInput').value.toLowerCase();
+
+            const filtered = allData.filter(row => {
+                const matchDispositif = !dispositif || row['Dispositif'] === dispositif;
+                const matchRestauration = !restauration || row['Restauration'] === restauration;
+                const matchPass1ere = !pass1ere || row['PASS 1ERE'] === pass1ere;
+                const matchSearch = !search ||
+                    row['Nom de l\'élève'].toLowerCase().includes(search) ||
+                    row['Email élève'].toLowerCase().includes(search);
+
+                return matchDispositif && matchRestauration && matchPass1ere && matchSearch;
+            });
+
+            renderTable(filtered);
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            const isPaid = (val) => val && val.trim().toLowerCase() === 'payé';
+
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row['Nom de l\'élève']}</td>
+                    <td>${row['Dispositif']}</td>
+                    <td>${row['Lycée d\'origine']}</td>
+                    <td>${row['Niveau']}</td>
+                    <td><span class="badge ${row['PASS 1ERE'] === 'Oui' ? 'badge-oui' : 'badge-non'}">${row['PASS 1ERE'] || '-'}</span></td>
+                    <td>${row['Email élève']}</td>
+                    <td>${row['Téléphone élève']}</td>
+                    <td class="medical-info">${row['Allergie'] || '-'}</td>
+                    <td class="medical-info">${row['Remarques'] || '-'}</td>
+                    <td class="medical-info">${row['Traitement'] || '-'}</td>
+                    <td class="medical-info">${row['Urgence'] || '-'}</td>
+                    <td><span class="badge ${row['Restauration'] === 'Oui' ? 'badge-oui' : 'badge-non'}">${row['Restauration']}</span></td>
+                    <td>${row['Nb repas'] || '-'}</td>
+                    <td>${row['Mode de règlement']}</td>
+                    <td>${row['Tarif']}€</td>
+                    <td><span class="badge ${isPaid(row['Paiement']) ? 'badge-oui' : 'badge-non'}">${row['Paiement'] || '-'}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function exportToExcel() {
+            const filtered = getFilteredData();
+            let csv = 'Nom,Dispositif,Lycée,Niveau,PASS 1ère,Email,Téléphone,Allergies,Remarques,Traitement,Urgence,Restauration,Nb Repas,Mode Paiement,Tarif\n';
+
+            filtered.forEach(row => {
+                csv += `"${row['Nom de l\'élève']}","${row['Dispositif']}","${row['Lycée d\'origine']}","${row['Niveau']}","${row['PASS 1ERE']}","${row['Email élève']}","${row['Téléphone élève']}","${row['Allergie']}","${row['Remarques']}","${row['Traitement']}","${row['Urgence']}","${row['Restauration']}","${row['Nb repas']}","${row['Mode de règlement']}","${row['Tarif']}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `inscriptions_${new Date().toLocaleDateString('fr-FR')}.csv`;
+            link.click();
+        }
+
+        function getFilteredData() {
+            const dispositif = document.getElementById('filterDispositif').value;
+            const restauration = document.getElementById('filterRestauration').value;
+            const pass1ere = document.getElementById('filterPass1ere').value;
+            const search = document.getElementById('searchInput').value.toLowerCase();
+
+            return allData.filter(row => {
+                const matchDispositif = !dispositif || row['Dispositif'] === dispositif;
+                const matchRestauration = !restauration || row['Restauration'] === restauration;
+                const matchPass1ere = !pass1ere || row['PASS 1ERE'] === pass1ere;
+                const matchSearch = !search ||
+                    row['Nom de l\'élève'].toLowerCase().includes(search) ||
+                    row['Email élève'].toLowerCase().includes(search);
+
+                return matchDispositif && matchRestauration && matchPass1ere && matchSearch;
+            });
+        }
+
+        // Initialisation
+        window.addEventListener('load', () => {
+            const savedTheme = localStorage.getItem('dashboardTheme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+
+            if (localStorage.getItem('dashboardLogin') === 'true') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').classList.add('active');
+                loadData();
+            }
+        });
+    </script>
+</body>
+</html>
