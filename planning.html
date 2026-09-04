@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planning Tremplins Sup — Saint Victor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f8f6;
+      --surface: #ffffff;
+      --surface-alt: #f2f2f0;
+      --border: #e0e0dc;
+      --border-strong: #c8c8c4;
+      --text-primary: #1a1a18;
+      --text-secondary: #5a5a56;
+      --text-muted: #9a9a96;
+      --accent: #1a5fa8;
+      --accent-bg: #e8f0fa;
+      --accent-border: #a8c4e8;
+      --success: #1a7a3a;
+      --success-bg: #e8f5ed;
+      --success-border: #a8d8b8;
+      --warning: #8a5a00;
+      --warning-bg: #fdf5e0;
+      --warning-border: #e8d090;
+      --radius: 8px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1a1a18;
+        --surface: #242422;
+        --surface-alt: #2e2e2c;
+        --border: #3a3a38;
+        --border-strong: #4a4a48;
+        --text-primary: #f0f0ec;
+        --text-secondary: #a0a09c;
+        --text-muted: #606060;
+        --accent: #6aaae0;
+        --accent-bg: #1a2a3a;
+        --accent-border: #2a4a6a;
+        --success: #5aaa7a;
+        --success-bg: #1a2e22;
+        --success-border: #2a4a36;
+        --warning: #e0aa40;
+        --warning-bg: #2a2010;
+        --warning-border: #4a3a18;
+      }
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    .page-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo-area { display: flex; align-items: center; gap: 12px; }
+    .logo-mark {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--accent); display: flex; align-items: center;
+      justify-content: center; color: #fff; font-size: 18px; font-weight: 500;
+    }
+    .logo-text { font-size: 16px; font-weight: 500; color: var(--text-primary); }
+    .logo-sub { font-size: 13px; color: var(--text-secondary); margin-top: 1px; }
+
+    .back-link {
+      font-size: 13px; color: var(--accent); text-decoration: none;
+      display: flex; align-items: center; gap: 6px;
+      border: 1px solid var(--accent-border); border-radius: var(--radius);
+      padding: 6px 12px; background: var(--accent-bg);
+    }
+    .back-link:hover { opacity: 0.8; }
+
+    .main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+    .section-title {
+      font-size: 13px; color: var(--text-muted);
+      margin-bottom: 1.25rem; letter-spacing: 0.02em;
+    }
+
+    .filters {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem;
+    }
+    .filter-btn {
+      font-size: 13px; padding: 6px 14px; border-radius: var(--radius);
+      border: 1px solid var(--border-strong); background: transparent;
+      color: var(--text-secondary); cursor: pointer; transition: all 0.15s;
+      font-family: inherit;
+    }
+    .filter-btn:hover { background: var(--surface-alt); }
+    .filter-btn.active {
+      background: var(--accent-bg); border-color: var(--accent-border);
+      color: var(--accent);
+    }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem;
+      display: none;
+    }
+    .card.visible { display: block; }
+
+    .card-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 1rem; flex-wrap: wrap; gap: 8px;
+    }
+    .card-title { font-size: 16px; font-weight: 500; color: var(--text-primary); }
+    .card-subtitle { font-size: 13px; color: var(--text-secondary); margin-top: 3px; }
+    .card-meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+    .badge {
+      font-size: 12px; padding: 3px 10px; border-radius: var(--radius); border: 1px solid;
+    }
+    .badge-price {
+      background: var(--success-bg); border-color: var(--success-border);
+      color: var(--success);
+    }
+    .badge-price-alt {
+      background: var(--surface-alt); border-color: var(--border);
+      color: var(--text-secondary); font-size: 11px;
+    }
+
+    .sessions {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px;
+    }
+    @media (max-width: 600px) {
+      .sessions { grid-template-columns: 1fr; }
+    }
+
+    .session-block {
+      background: var(--surface-alt); border-radius: var(--radius);
+      padding: 10px 12px; border: 1px solid var(--border);
+    }
+    .session-label { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
+    .session-day {
+      font-size: 13px; color: var(--text-primary); font-weight: 500; margin-bottom: 4px;
+    }
+    .session-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 6px; margin-bottom: 2px;
+    }
+    .session-time { font-size: 12px; color: var(--text-secondary); }
+    .session-discipline { font-size: 11px; color: var(--text-muted); font-style: italic; }
+    .session-intervenant { font-size: 12px; color: var(--accent); margin-top: 5px; }
+    .session-tbd { font-size: 12px; color: var(--text-muted); font-style: italic; }
+
+    .special-tag {
+      display: inline-block; font-size: 11px;
+      background: var(--warning-bg); border: 1px solid var(--warning-border);
+      color: var(--warning); border-radius: var(--radius); padding: 2px 8px; margin-top: 5px;
+    }
+
+    .note {
+      font-size: 12px; color: var(--text-secondary); margin-top: 8px; padding-top: 8px;
+      border-top: 1px solid var(--border); display: flex; align-items: flex-start; gap: 6px;
+    }
+    .note i { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+    .extras {
+      margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px;
+    }
+    @media (max-width: 500px) { .extras { grid-template-columns: 1fr; } }
+
+    .extra-block {
+      background: var(--surface-alt); border-radius: var(--radius);
+      padding: 10px 12px; border: 1px solid var(--border);
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .extra-block i { font-size: 18px; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+    .extra-title { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+    .extra-desc { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+
+    .footer {
+      text-align: center; padding: 2rem; font-size: 12px; color: var(--text-muted);
+      border-top: 1px solid var(--border); margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="logo-area">
+    <div class="logo-mark">SV</div>
+    <div>
+      <div class="logo-text">Tremplins Sup</div>
+      <div class="logo-sub">Lycée Saint Victor — Valence</div>
+    </div>
+  </div>
+  <a href="index.html" class="back-link">
+    <i class="ti ti-arrow-left"></i> Retour aux inscriptions
+  </a>
+</header>
+
+<main class="main">
+  <div class="section-title">Programme 2025-2026</div>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="filter('all',event)">Tous les dispositifs</button>
+    <button class="filter-btn" onclick="filter('pass',event)">PASS</button>
+    <button class="filter-btn" onclick="filter('inge',event)">Ingénierie</button>
+    <button class="filter-btn" onclick="filter('declic',event)">Déclic Sc. Po</button>
+    <button class="filter-btn" onclick="filter('peps',event)">PEPS</button>
+    <button class="filter-btn" onclick="filter('eloquence',event)">Éloquence</button>
+  </div>
+
+  <!-- PASS -->
+  <div class="card visible" data-tag="pass">
+    <div class="card-header">
+      <div>
+        <div class="card-title">PASS — Médecine, pharmacie, maïeutique, odontologie</div>
+        <div class="card-subtitle">1re et Terminale · 35 places</div>
+      </div>
+      <div class="card-meta">
+        <span class="badge badge-price">500 € Saint Victor / partenaires</span>
+        <span class="badge badge-price-alt">600 € autres lycées</span>
+      </div>
+    </div>
+    <div class="sessions">
+      <div class="session-block">
+        <div class="session-label">Session 1</div>
+        <div class="session-day">Lun. 19 oct.</div>
+        <div class="session-time">9h30 – 12h30 / 13h30 – 16h30</div>
+        <div class="session-intervenant">2 étudiants Avicenne</div>
+        <div class="session-day" style="margin-top:8px">Mar. 20 oct.</div>
+        <div class="session-time">9h30 – 12h30 / 13h30 – 16h30</div>
+        <div class="session-intervenant">2 étudiants Avicenne</div>
+        <div class="session-day" style="margin-top:8px">Mer. 21 oct.</div>
+        <div class="session-time">9h30 – 12h30 / 13h30 – 16h30</div>
+        <div class="session-intervenant">2 étudiants Avicenne</div>
+      </div>
+      <div class="session-block">
+        <div class="session-label">Session 2</div>
+        <div class="session-day">Lun. 15 fév.</div>
+        <div class="session-time">9h30 – 12h30 / 13h30 – 16h30</div>
+        <div class="session-intervenant">2 étudiants Avicenne</div>
+        <div class="session-day" style="margin-top:8px">Mar. 16 fév.</div>
+        <div class="session-time">9h30 – 12h30 / 13h30 – 16h30</div>
+        <div class="session-intervenant">2 étudiants Avicenne</div>
+        <div class="session-day" style="margin-top:8px">Mer. 17 fév.</div>
+        <div class="session-time">9h30 – 12h30</div>
+        <div class="session-intervenant">2 étudiants Avicenne</div>
+      </div>
+      <div class="session-block">
+        <div class="session-label">Session 3</div>
+        <div class="session-day">Lun. 12 avril</div>
+        <div class="session-time">9h30 – 12h30</div>
+        <div class="session-intervenant">2 étudiants Avicenne</div>
+        <div class="session-day" style="margin-top:8px">Mar. 13 avril</div>
+        <div class="session-time">10h – 12h · Tables rondes</div>
+        <div class="session-time">13h – 16h · Ateliers</div>
+        <div class="session-intervenant">2 étudiants Avicenne</div>
+        <div class="special-tag">Repas partagé offert par Saint Victor</div>
+      </div>
+    </div>
+    <div class="note">
+      <i class="ti ti-info-circle"></i>
+      <span>Ateliers session 3 : suture, gestes premiers secours, nutrition</span>
+    </div>
+  </div>
+
+  <!-- INGE -->
+  <div class="card visible" data-tag="inge">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Ingénierie — Classes prépa CPGE</div>
+        <div class="card-subtitle">Terminale · 18 places</div>
+      </div>
+      <div class="card-meta">
+        <span class="badge badge-price">250 €</span>
+      </div>
+    </div>
+    <div class="sessions">
+      <div class="session-block">
+        <div class="session-label">Session 1</div>
+        <div class="session-day">Lun. 19 oct.</div>
+        <div class="session-row"><span class="session-time">9h – 12h</span><span class="session-discipline">Physique</span></div>
+        <div class="session-row"><span class="session-time">13h – 16h</span><span class="session-discipline">Maths</span></div>
+        <div class="session-intervenant">X-Maths · Mme Follin · M. Ramirez</div>
+        <div class="session-day" style="margin-top:8px">Mar. 20 oct.</div>
+        <div class="session-row"><span class="session-time">9h – 12h</span><span class="session-discipline">Maths</span></div>
+        <div class="session-row"><span class="session-time">13h – 16h</span><span class="session-discipline">Physique</span></div>
+        <div class="session-intervenant">X-Maths · Mme Follin · M. Ramirez</div>
+      </div>
+      <div class="session-block">
+        <div class="session-label">Session 2</div>
+        <div class="session-day">Lun. 15 fév.</div>
+        <div class="session-row"><span class="session-time">9h – 12h</span><span class="session-discipline">Maths</span></div>
+        <div class="session-row"><span class="session-time">13h – 16h</span><span class="session-discipline">Physique</span></div>
+        <div class="session-intervenant">X-Maths · Mme Follin · M. Ramirez</div>
+        <div class="session-day" style="margin-top:8px">Mar. 16 fév.</div>
+        <div class="session-row"><span class="session-time">9h – 12h</span><span class="session-discipline">Physique</span></div>
+        <div class="session-row"><span class="session-time">13h – 16h</span><span class="session-discipline">Maths</span></div>
+        <div class="session-intervenant">X-Maths · Mme Follin · M. Ramirez</div>
+      </div>
+      <div class="session-block">
+        <div class="session-label">Session 3</div>
+        <div class="session-day">Lun. 12 avril</div>
+        <div class="session-row"><span class="session-time">9h – 12h</span><span class="session-discipline">Maths</span></div>
+        <div class="session-intervenant">X-Maths</div>
+        <div class="session-day" style="margin-top:8px">Mar. 13 avril</div>
+        <div class="session-row"><span class="session-time">9h – 12h</span><span class="session-discipline">Maths</span></div>
+        <div class="session-intervenant">X-Maths</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DECLIC -->
+  <div class="card visible" data-tag="declic">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Déclic Sciences Po</div>
+        <div class="card-subtitle">1re et Terminale · 12 places</div>
+      </div>
+      <div class="card-meta">
+        <span class="badge badge-price">250 €</span>
+      </div>
+    </div>
+    <div class="sessions">
+      <div class="session-block">
+        <div class="session-label">Session 1</div>
+        <div class="session-day">Mar. 20 oct.</div>
+        <div class="session-time">9h – 12h / 13h – 16h</div>
+        <div class="session-intervenant">M. Durif</div>
+        <div class="session-discipline">Questions contemporaines</div>
+        <div class="session-day" style="margin-top:8px">Mer. 21 oct.</div>
+        <div class="session-time">9h – 12h / 13h – 16h</div>
+        <div class="session-intervenant">M. Durif</div>
+        <div class="session-discipline">Questions contemporaines</div>
+      </div>
+      <div class="session-block">
+        <div class="session-label">Session 2</div>
+        <div class="session-day">Mar. 16 fév.</div>
+        <div class="session-time">9h – 12h / 13h – 16h</div>
+        <div class="session-intervenant">M. Durif</div>
+        <div class="session-discipline">Questions contemporaines</div>
+        <div class="session-day" style="margin-top:8px">Mer. 17 fév.</div>
+        <div class="session-time">9h – 12h / 13h – 16h</div>
+        <div class="session-intervenant">M. Durif</div>
+        <div class="session-discipline">Questions contemporaines</div>
+      </div>
+      <div class="session-block">
+        <div class="session-label">Session 3</div>
+        <div class="session-day">Lun. 12 avril</div>
+        <div class="session-time">9h – 12h / 13h – 16h</div>
+        <div class="session-intervenant">M. Durif</div>
+        <div class="session-discipline">Questions contemporaines</div>
+        <div class="session-day" style="margin-top:8px">Mar. 13 avril</div>
+        <div class="session-time">9h – 12h / 13h – 16h</div>
+        <div class="session-intervenant">M. Durif</div>
+        <div class="session-discipline">Questions contemporaines</div>
+      </div>
+    </div>
+    <div class="note">
+      <i class="ti ti-clock"></i>
+      <span>+ 9 mercredis après-midi 13h30 – 16h30 (Terminale uniquement) — dates à confirmer</span>
+    </div>
+  </div>
+
+  <!-- PEPS -->
+  <div class="card visible" data-tag="peps">
+    <div class="card-header">
+      <div>
+        <div class="card-title">PEPS — Droit, économie, gestion</div>
+        <div class="card-subtitle">Terminale · 18 places</div>
+      </div>
+      <div class="card-meta">
+        <span class="badge badge-price">150 €</span>
+      </div>
+    </div>
+    <div class="sessions">
+      <div class="session-block">
+        <div class="session-label">Session 1</div>
+        <div class="session-day">Lun. 19 oct.</div>
+        <div class="session-time">9h – 12h / 13h – 16h</div>
+        <div class="session-intervenant">2 intervenants</div>
+        <div class="session-day" style="margin-top:8px">Mar. 20 oct.</div>
+        <div class="session-time">9h – 12h / 13h – 16h</div>
+        <div class="session-intervenant">2 intervenants</div>
+      </div>
+      <div class="session-block">
+        <div class="session-label">Session 2</div>
+        <div class="session-day">Lun. 15 fév.</div>
+        <div class="session-time">9h – 12h / 13h – 16h</div>
+        <div class="session-intervenant">Mme Gaudenz</div>
+        <div class="session-day" style="margin-top:8px">Mar. 16 fév.</div>
+        <div class="session-time">9h – 12h / 13h – 16h</div>
+        <div class="session-intervenant">M. Gato · M. Lopez</div>
+      </div>
+      <div class="session-block">
+        <div class="session-label">Session 3</div>
+        <div class="session-day">Lun. 12 avril</div>
+        <div class="session-time">9h – 12h / 13h – 16h</div>
+        <div class="session-intervenant">2 intervenants</div>
+        <div class="session-day" style="margin-top:8px">Mar. 13 avril</div>
+        <div class="session-time">9h – 12h / 13h – 16h</div>
+        <div class="session-intervenant">2 intervenants</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ELOQUENCE -->
+  <div class="card visible" data-tag="eloquence">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Tremplin Éloquence</div>
+        <div class="card-subtitle">1re et Terminale · 15 places</div>
+      </div>
+      <div class="card-meta">
+        <span class="badge badge-price">200 €</span>
+      </div>
+    </div>
+    <div class="sessions">
+      <div class="session-block">
+        <div class="session-label">Session 1</div>
+        <div class="session-day">Lun. 19 oct.</div>
+        <div class="session-time">9h – 12h / 13h – 16h</div>
+        <div class="session-intervenant">2 intervenants</div>
+      </div>
+      <div class="session-block">
+        <div class="session-label">Session 2</div>
+        <div class="session-day">Lun. 15 fév.</div>
+        <div class="session-time">9h – 12h / 13h – 16h</div>
+        <div class="session-intervenant">2 intervenants</div>
+      </div>
+      <div class="session-block">
+        <div class="session-label">Session 3</div>
+        <div class="session-tbd">Dates à confirmer</div>
+      </div>
+    </div>
+    <div class="extras">
+      <div class="extra-block">
+        <i class="ti ti-microphone"></i>
+        <div>
+          <div class="extra-title">Cycle de conférences</div>
+          <div class="extra-desc">3 conférences en soirée — dates à confirmer</div>
+        </div>
+      </div>
+      <div class="extra-block">
+        <i class="ti ti-trophy"></i>
+        <div>
+          <div class="extra-title">Concours régional d'éloquence</div>
+          <div class="extra-desc">Participation au concours régional</div>
+        </div>
+      </div>
+    </div>
+    <div class="note">
+      <i class="ti ti-clock"></i>
+      <span>+ 2 mercredis après-midi 13h30 – 16h30 — dates à confirmer</span>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  Lycée Saint Victor · Valence · <a href="index.html" style="color:inherit">Retour aux inscriptions</a>
+</footer>
+
+<script>
+  function filter(tag, e) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    document.querySelectorAll('.card').forEach(c => {
+      c.classList.toggle('visible', tag === 'all' || c.dataset.tag === tag);
+    });
+  }
+</script>
+
+</body>
+</html>
