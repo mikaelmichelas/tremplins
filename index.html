@@ -639,6 +639,7 @@
         </div>
 
         <div class="header-right">
+            <button class="btn-login" onclick="location.reload()">🏠 Accueil</button>
             <button class="theme-switch" onclick="toggleTheme()">🌙 Mode sombre</button>
             <button class="btn-login" onclick="goToDashboard()">👤 Espace Personnel</button>
         </div>
@@ -651,6 +652,7 @@
             <button class="brochure-btn" onclick="downloadBrochure('Déclic')">📄 Brochure Déclic</button>
             <button class="brochure-btn" onclick="downloadBrochure('INGE')">📄 Brochure INGE</button>
             <button class="brochure-btn" onclick="downloadBrochure('PEPS')">📄 Brochure PEPS</button>
+            <button class="brochure-btn" onclick="downloadBrochure('Eloquence')">📄 Brochure Eloquence</button>
             <button class="brochure-btn" onclick="window.open('planning.html','_blank')">📅 Planning 2026-2027</button>
         </div>
     </div>
@@ -685,9 +687,9 @@
                         </label>
 
                         <label class="radio-item">
-                            <input type="radio" name="dispositif" value="Tremplin INGE" data-tarif="250" data-niveau="term" data-lycee="no">
+                            <input type="radio" name="dispositif" value="Tremplin INGE" data-tarif="300" data-niveau="term" data-lycee="no">
                             <div class="radio-label">
-                                <strong>Tremplin INGE (250€)</strong>
+                                <strong>Tremplin INGE (300€)</strong>
                                 <small>Terminale - Élèves Saint Victor</small>
                             </div>
                         </label>
@@ -969,7 +971,7 @@
         const tarifs = {
             'PASS': 500,
             'Déclic Sciences PO': 250,
-            'Tremplin INGE': 250,
+            'Tremplin INGE': 300,
             'Tremplin PEPS': 150,
             'Tremplin Eloquence': 200
         };
@@ -1381,7 +1383,7 @@
                 'Déclic': 'https://raw.githubusercontent.com/mikaelmichelas/tremplins/main/2025-2026_Brochure_Declic_Sciences_PO.pdf',
                 'INGE': 'https://raw.githubusercontent.com/mikaelmichelas/tremplins/main/2025-2026_Brochure_Tremplin_INGE.pdf',
                 'PEPS': 'https://raw.githubusercontent.com/mikaelmichelas/tremplins/main/2025-2026_Brochure_Tremplin_PEPS.pdf',
-
+                'Eloquence': 'https://raw.githubusercontent.com/mikaelmichelas/tremplins/main/2026-2027_Brochure_Eloquence.pdf'
             };
 
             const url = files[type];
