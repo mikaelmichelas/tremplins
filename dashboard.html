@@ -146,7 +146,7 @@
         .kpi-sections {
             display: grid;
             grid-template-columns: 1fr 2fr 1fr;
-            gap: 15px;
+            gap: 10px;
             margin-bottom: 15px;
         }
 
@@ -156,15 +156,15 @@
         }
 
         .kpi-section h2 {
-            margin: 0 0 12px 0;
-            font-size: 16px;
+            margin: 0 0 8px 0;
+            font-size: 15px;
         }
 
         .kpi-section-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
+            gap: 8px;
+            margin-bottom: 8px;
         }
 
         .kpi-section-header h2 {
@@ -174,7 +174,7 @@
         .kpi-section-header::after {
             content: '';
             width: 1px;
-            height: 20px;
+            height: 18px;
             background: #ddd;
         }
 
@@ -187,21 +187,21 @@
         .kpi-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 8px;
+            gap: 6px;
         }
 
         #financialKpis {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
         }
 
         .kpi-card {
             background: white;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border-left: 4px solid var(--secondary);
+            padding: 8px;
+            border-radius: 6px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            border-left: 3px solid var(--secondary);
         }
 
         body.dark-mode .kpi-card {
@@ -209,10 +209,10 @@
         }
 
         .kpi-card h3 {
-            font-size: 10px;
+            font-size: 9px;
             color: #666;
             text-transform: uppercase;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             font-weight: 600;
             letter-spacing: 0.5px;
         }
@@ -222,10 +222,10 @@
         }
 
         .kpi-card .value {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
             color: var(--primary);
-            margin: 4px 0;
+            margin: 2px 0;
         }
 
         .filters {
@@ -423,21 +423,6 @@
                             </div>
                         </div>
                     </div>
-                    <h2 style="color: var(--primary); margin: 12px 0 12px 0; font-size: 16px;">Repas par Session</h2>
-                    <div class="kpi-grid">
-                        <div class="kpi-card">
-                            <h3>Repas Octobre</h3>
-                            <div class="value" id="repasOctobreKpi">0</div>
-                        </div>
-                        <div class="kpi-card">
-                            <h3>Repas Février</h3>
-                            <div class="value" id="repasFvrierKpi">0</div>
-                        </div>
-                        <div class="kpi-card">
-                            <h3>Repas Avril</h3>
-                            <div class="value" id="repasAvrilKpi">0</div>
-                        </div>
-                    </div>
                     <h2 style="color: var(--primary); margin: 12px 0 12px 0; font-size: 16px;">Bilan Paiement</h2>
                     <div class="kpi-grid">
                         <div class="kpi-card">
@@ -465,25 +450,28 @@
                     <div class="kpi-grid" id="financialKpis"></div>
                 </div>
 
-                <!-- COLONNE 3: BILAN MEDICAL -->
+                <!-- COLONNE 3: BILAN RESTAURATION -->
                 <div class="kpi-section">
-                    <h2 style="color: var(--primary);">Bilan Médical</h2>
+                    <h2 style="color: var(--primary);">Bilan Restauration</h2>
                     <div class="kpi-grid">
                         <div class="kpi-card">
-                            <h3>Élèves avec Allergies</h3>
-                            <div class="value" id="allergiesKpi">0</div>
+                            <h3>Restauration OUI</h3>
+                            <div class="value" id="restaOuiKpi">0</div>
+                            <div style="font-size: 11px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd;">
+                                <div style="color: #666;">Total Repas: <strong style="color: var(--primary);" id="totalRepasDashKpi">0</strong></div>
+                            </div>
                         </div>
                         <div class="kpi-card">
-                            <h3>Conditions Médicales</h3>
-                            <div class="value" id="conditionsKpi">0</div>
+                            <h3>Repas Octobre</h3>
+                            <div class="value" id="repasOctobreDashKpi">0</div>
                         </div>
                         <div class="kpi-card">
-                            <h3>Sous Traitement</h3>
-                            <div class="value" id="traitementKpi">0</div>
+                            <h3>Repas Février</h3>
+                            <div class="value" id="repasFvrierDashKpi">0</div>
                         </div>
                         <div class="kpi-card">
-                            <h3>Contacts Urgence</h3>
-                            <div class="value" id="urgenceKpi">0</div>
+                            <h3>Repas Avril</h3>
+                            <div class="value" id="repasAvrilDashKpi">0</div>
                         </div>
                     </div>
                 </div>
@@ -658,15 +646,6 @@
             document.getElementById('restaurationOuiKpi').textContent = restaurationOui;
             document.getElementById('totalRepasKpi').textContent = totalRepas;
 
-            // Repas par session
-            const repasOctobre = countRepasBySession('Resto Octobre');
-            const repasFevrier = countRepasBySession('Resto Février');
-            const repasAvril = countRepasBySession('Resto Avril');
-
-            document.getElementById('repasOctobreKpi').textContent = repasOctobre;
-            document.getElementById('repasFvrierKpi').textContent = repasFevrier;
-            document.getElementById('repasAvrilKpi').textContent = repasAvril;
-
             // Paiement - normalize comparisons
             const isPaid = (val) => val && val.trim().toLowerCase() === 'payé';
             const paid = allData.filter(r => isPaid(r['Paiement'])).length;
@@ -740,16 +719,24 @@
             document.getElementById('financialKpis').innerHTML = financialHtml;
             document.getElementById('totalGeneralDisplay').textContent = totalGlobal + '€';
 
-            // KPIs Médicaux
-            const allergies = allData.filter(r => r['Allergie'] && String(r['Allergie']).trim().length > 0).length;
-            const conditions = allData.filter(r => r['Remarques'] && String(r['Remarques']).trim().length > 0).length;
-            const traitement = allData.filter(r => r['Traitement'] && String(r['Traitement']).trim().length > 0).length;
-            const urgence = allData.filter(r => r['Urgence'] && String(r['Urgence']).trim().length > 0).length;
+            // Bilan Restauration (colonne 3)
+            const restaurationOuiCount = allData.filter(r => r['Restauration'] === 'Oui').length;
+            const totalRepasBilan = allData.reduce((sum, r) => {
+                if (r['Restauration'] === 'Oui' && r['Nb repas']) {
+                    const match = r['Nb repas'].match(/\d+/);
+                    return sum + (match ? parseInt(match[0]) : 0);
+                }
+                return sum;
+            }, 0);
+            const repasOctobreBilan = countRepasBySession('Resto Octobre');
+            const repasFvrierBilan = countRepasBySession('Resto Février');
+            const repasAvrilBilan = countRepasBySession('Resto Avril');
 
-            document.getElementById('allergiesKpi').textContent = allergies;
-            document.getElementById('conditionsKpi').textContent = conditions;
-            document.getElementById('traitementKpi').textContent = traitement;
-            document.getElementById('urgenceKpi').textContent = urgence;
+            document.getElementById('restaOuiKpi').textContent = restaurationOuiCount;
+            document.getElementById('totalRepasDashKpi').textContent = totalRepasBilan;
+            document.getElementById('repasOctobreDashKpi').textContent = repasOctobreBilan;
+            document.getElementById('repasFvrierDashKpi').textContent = repasFvrierBilan;
+            document.getElementById('repasAvrilDashKpi').textContent = repasAvrilBilan;
         }
 
         function applyFilters() {
