@@ -894,17 +894,179 @@
                 </div>
 
                 <div class="form-group" id="group-restauration-jours" style="display: none;">
-                    <label for="restauration-nb-repas">Nombre de repas souhaités <span class="required">*</span></label>
-                    <select id="restauration-nb-repas" name="restauration-nb-repas">
-                        <option value="">-- Sélectionnez --</option>
-                        <option value="1 repas">1 repas</option>
-                        <option value="2 repas">2 repas</option>
-                        <option value="3 repas">3 repas</option>
-                        <option value="4 repas">4 repas</option>
-                        <option value="5 repas">5 repas</option>
-                        <option value="6 repas">6 repas</option>
-                    </select>
-                    <div class="error-msg">Veuillez sélectionner un nombre de repas</div>
+                    <label style="margin-bottom: 15px;">Sélectionnez les jours de restauration <span class="required">*</span></label>
+
+                    <!-- PASS -->
+                    <div id="restauration-pass" style="display: none;">
+                        <div style="margin-bottom: 20px; padding: 15px; background: var(--light); border-radius: 6px;">
+                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Octobre (3 jours)</h4>
+                            <div style="display: flex; gap: 20px; flex-wrap: wrap; flex-direction: column;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-octobre" value="Lundi 19 octobre">
+                                    <span style="font-size: 14px;">Lundi 19 octobre</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-octobre" value="Mardi 20 octobre">
+                                    <span style="font-size: 14px;">Mardi 20 octobre</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-octobre" value="Mercredi 21 octobre">
+                                    <span style="font-size: 14px;">Mercredi 21 octobre</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 20px; padding: 15px; background: var(--light); border-radius: 6px;">
+                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Février (3 jours)</h4>
+                            <div style="display: flex; gap: 20px; flex-wrap: wrap; flex-direction: column;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-fevrier" value="Lundi 15 février">
+                                    <span style="font-size: 14px;">Lundi 15 février</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-fevrier" value="Mardi 16 février">
+                                    <span style="font-size: 14px;">Mardi 16 février</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-fevrier" value="Mercredi 17 février">
+                                    <span style="font-size: 14px;">Mercredi 17 février</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 20px; padding: 15px; background: var(--light); border-radius: 6px;">
+                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Avril (2 jours - repas partagé offert le dernier jour)</h4>
+                            <div style="display: flex; gap: 20px; flex-wrap: wrap; flex-direction: column;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-avril" value="Lundi 12 avril">
+                                    <span style="font-size: 14px;">Lundi 12 avril</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-avril" value="Mardi 13 avril">
+                                    <span style="font-size: 14px;">Mardi 13 avril</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PEPS & INGE (mêmes dates) -->
+                    <div id="restauration-peps-inge" style="display: none;">
+                        <div style="margin-bottom: 20px; padding: 15px; background: var(--light); border-radius: 6px;">
+                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Octobre (2 jours)</h4>
+                            <div style="display: flex; gap: 20px; flex-wrap: wrap; flex-direction: column;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-octobre-pi" value="Lundi 19 octobre">
+                                    <span style="font-size: 14px;">Lundi 19 octobre</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-octobre-pi" value="Mardi 20 octobre">
+                                    <span style="font-size: 14px;">Mardi 20 octobre</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 20px; padding: 15px; background: var(--light); border-radius: 6px;">
+                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Février (2 jours)</h4>
+                            <div style="display: flex; gap: 20px; flex-wrap: wrap; flex-direction: column;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-fevrier-pi" value="Lundi 15 février">
+                                    <span style="font-size: 14px;">Lundi 15 février</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-fevrier-pi" value="Mardi 16 février">
+                                    <span style="font-size: 14px;">Mardi 16 février</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 20px; padding: 15px; background: var(--light); border-radius: 6px;">
+                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Avril (2 jours - repas partagé offert le dernier jour)</h4>
+                            <div style="display: flex; gap: 20px; flex-wrap: wrap; flex-direction: column;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-avril-pi" value="Lundi 12 avril">
+                                    <span style="font-size: 14px;">Lundi 12 avril</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-avril-pi" value="Mardi 13 avril">
+                                    <span style="font-size: 14px;">Mardi 13 avril</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ELOQUENCE -->
+                    <div id="restauration-eloquence" style="display: none;">
+                        <div style="margin-bottom: 20px; padding: 15px; background: var(--light); border-radius: 6px;">
+                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Octobre (1 jour)</h4>
+                            <div style="display: flex; gap: 20px; flex-wrap: wrap; flex-direction: column;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-octobre-e" value="Lundi 19 octobre">
+                                    <span style="font-size: 14px;">Lundi 19 octobre</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 20px; padding: 15px; background: var(--light); border-radius: 6px;">
+                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Février (1 jour)</h4>
+                            <div style="display: flex; gap: 20px; flex-wrap: wrap; flex-direction: column;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-fevrier-e" value="Lundi 15 février">
+                                    <span style="font-size: 14px;">Lundi 15 février</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DÉCLIC SCIENCES PO -->
+                    <div id="restauration-declic" style="display: none;">
+                        <div style="margin-bottom: 20px; padding: 15px; background: var(--light); border-radius: 6px;">
+                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Octobre (2 jours)</h4>
+                            <div style="display: flex; gap: 20px; flex-wrap: wrap; flex-direction: column;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-octobre-d" value="Mardi 20 octobre">
+                                    <span style="font-size: 14px;">Mardi 20 octobre</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-octobre-d" value="Mercredi 21 octobre">
+                                    <span style="font-size: 14px;">Mercredi 21 octobre</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 20px; padding: 15px; background: var(--light); border-radius: 6px;">
+                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Février (3 jours)</h4>
+                            <div style="display: flex; gap: 20px; flex-wrap: wrap; flex-direction: column;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-fevrier-d" value="Lundi 15 février">
+                                    <span style="font-size: 14px;">Lundi 15 février</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-fevrier-d" value="Mardi 16 février">
+                                    <span style="font-size: 14px;">Mardi 16 février</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-fevrier-d" value="Mercredi 17 février">
+                                    <span style="font-size: 14px;">Mercredi 17 février</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 20px; padding: 15px; background: var(--light); border-radius: 6px;">
+                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Avril (2 jours - repas partagé offert le dernier jour)</h4>
+                            <div style="display: flex; gap: 20px; flex-wrap: wrap; flex-direction: column;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-avril-d" value="Lundi 12 avril">
+                                    <span style="font-size: 14px;">Lundi 12 avril</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" name="resto-avril-d" value="Mardi 13 avril">
+                                    <span style="font-size: 14px;">Mardi 13 avril</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="error-msg" id="error-restauration-jours">Veuillez sélectionner au moins un jour de restauration</div>
                 </div>
 
                 <div class="form-group">
@@ -918,25 +1080,58 @@
                     <div class="error-msg">Vous devez confirmer votre engagement</div>
                 </div>
 
-                <div class="form-group">
-                    <label>Modalités de règlement <span class="required">*</span></label>
-                    <div class="radio-group">
-                        <label class="radio-item">
-                            <input type="radio" name="reglement" value="Chèque en 1 fois">
-                            <div class="radio-label">
-                                <strong>Chèque en 1 fois</strong>
-                                <small>À l'ordre de OGEC SAINT VICTOR</small>
-                            </div>
-                        </label>
-                        <label class="radio-item">
-                            <input type="radio" name="reglement" value="Chèque en 3 fois">
-                            <div class="radio-label">
-                                <strong>Chèque en 3 fois</strong>
-                                <small>À l'ordre de OGEC SAINT VICTOR</small>
-                            </div>
-                        </label>
+                <!-- SECTION POUR DISPOSITIFS INTERNES (Déclic, INGE, PEPS, Eloquence) -->
+                <div id="section-reglement-interne" style="display: none;">
+                    <div class="info-box" style="background: rgba(243, 156, 18, 0.1); border-left-color: var(--accent-orange); margin-bottom: 20px;">
+                        <strong style="color: var(--accent-orange);">📋 Modalités de paiement</strong><br>
+                        <small style="color: #666; display: block; margin-top: 6px;">Tous les règlements doivent être finalisés avant le <strong>14 octobre</strong>. Pour les familles de Saint Victor ayant autorisé le prélèvement automatique : le montant sera lissé sur 10 mois et prélevé via la scolarité. Pour les autres familles de Saint Victor : une ligne sera ajoutée à votre facture de scolarité avec paiement proposé en 3 fois par trimestre.</small>
                     </div>
-                    <div class="error-msg">Veuillez choisir un mode de règlement</div>
+                </div>
+
+                <!-- SECTION POUR PASS (Familles extérieures) -->
+                <div id="section-reglement-externe" style="display: none;">
+                    <div class="info-box" style="background: rgba(243, 156, 18, 0.1); border-left-color: var(--accent-orange); margin-bottom: 20px;">
+                        <strong style="color: var(--accent-orange);">📋 Modalités de paiement</strong><br>
+                        <small style="color: #666; display: block; margin-top: 6px;">Tous les règlements doivent être finalisés avant le <strong>14 octobre</strong>. Pour les familles de Saint Victor ayant autorisé le prélèvement automatique : le montant sera lissé sur 10 mois et prélevé via la scolarité. Pour les autres familles de Saint Victor : une ligne sera ajoutée à votre facture de scolarité avec paiement proposé en 3 fois par trimestre.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mode de règlement <span class="required">*</span> (Familles extérieures)</label>
+                        <div class="radio-group">
+                            <label class="radio-item">
+                                <input type="radio" name="reglement" value="Chèque en 1 fois">
+                                <div class="radio-label">
+                                    <strong>Chèque en 1 fois</strong>
+                                    <small>À l'ordre de OGEC SAINT VICTOR</small>
+                                </div>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="reglement" value="Chèque en 3 fois">
+                                <div class="radio-label">
+                                    <strong>Chèque en 3 fois</strong>
+                                    <small>Envoyez les 3 chèques ensemble avant le 14 octobre - ils seront encaissés un par trimestre à partir d'octobre</small>
+                                </div>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="reglement" value="Virement">
+                                <div class="radio-label">
+                                    <strong>Virement bancaire</strong>
+                                    <small>Paiement intégral uniquement</small>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="error-msg">Veuillez choisir un mode de règlement</div>
+                    </div>
+                </div>
+
+                <div id="groupe-virement" style="display: none; margin-top: 15px;">
+                    <div class="info-box" style="background: rgba(216, 74, 168, 0.1); border-left-color: var(--secondary);">
+                        <strong style="color: var(--secondary);">ℹ️ Paiement par virement</strong><br>
+                        <small style="color: #666; display: block; margin-top: 6px;">Le virement bancaire n'est possible que pour un règlement du montant total. Les coordonnées bancaires sont disponibles ci-dessous.</small>
+                    </div>
+                    <button type="button" class="brochure-btn" onclick="downloadRib()" style="margin-top: 12px; background: var(--secondary); color: white; border-color: var(--secondary);">
+                        📎 Télécharger les coordonnées bancaires (RIB)
+                    </button>
                 </div>
 
                 <div class="buttons">
@@ -1030,12 +1225,40 @@
         function updateRestaurationOptions() {
             const interet = document.querySelector('input[name="restauration-interet"]:checked');
             const joursGroup = document.getElementById('group-restauration-jours');
+            const dispositif = document.querySelector('input[name="dispositif"]:checked');
 
             if (interet && interet.value === 'Oui') {
                 joursGroup.style.display = 'block';
+                // Afficher les dates appropriées selon le dispositif
+                updateRestourationDates(dispositif);
             } else {
                 joursGroup.style.display = 'none';
-                document.getElementById('restauration-nb-repas').value = '';
+                // Réinitialiser les checkboxes
+                document.querySelectorAll('input[name^="resto-"]').forEach(cb => cb.checked = false);
+            }
+        }
+
+        function updateRestourationDates(dispositif) {
+            const passSection = document.getElementById('restauration-pass');
+            const pepsIngeSection = document.getElementById('restauration-peps-inge');
+            const eloquenceSection = document.getElementById('restauration-eloquence');
+            const declicSection = document.getElementById('restauration-declic');
+
+            // Masquer toutes les sections
+            passSection.style.display = 'none';
+            pepsIngeSection.style.display = 'none';
+            eloquenceSection.style.display = 'none';
+            declicSection.style.display = 'none';
+
+            // Afficher la section appropriée selon le dispositif
+            if (dispositif && dispositif.value === 'PASS') {
+                passSection.style.display = 'block';
+            } else if (dispositif && (dispositif.value === 'Tremplin PEPS' || dispositif.value === 'Tremplin INGE')) {
+                pepsIngeSection.style.display = 'block';
+            } else if (dispositif && dispositif.value === 'Tremplin Eloquence') {
+                eloquenceSection.style.display = 'block';
+            } else if (dispositif && dispositif.value === 'Déclic Sciences PO') {
+                declicSection.style.display = 'block';
             }
         }
 
@@ -1220,14 +1443,15 @@
                     errors.push('Veuillez répondre à la question restauration');
                 }
 
-                // Si restauration = Oui, nombre de repas obligatoire
+                // Si restauration = Oui, au moins un jour obligatoire
                 const restaInteret = document.querySelector('input[name="restauration-interet"]:checked');
                 if (restaInteret && restaInteret.value === 'Oui') {
-                    if (!document.getElementById('restauration-nb-repas').value) {
-                        document.getElementById('restauration-nb-repas').classList.add('error');
-                        errors.push('Veuillez sélectionner un nombre de repas');
+                    const allRestoCheckboxes = document.querySelectorAll('input[name^="resto-"]:checked');
+                    if (allRestoCheckboxes.length === 0) {
+                        document.getElementById('error-restauration-jours').style.display = 'block';
+                        errors.push('Veuillez sélectionner au moins un jour de restauration');
                     } else {
-                        document.getElementById('restauration-nb-repas').classList.remove('error');
+                        document.getElementById('error-restauration-jours').style.display = 'none';
                     }
                 }
 
@@ -1236,9 +1460,13 @@
                     errors.push('Veuillez confirmer votre engagement');
                 }
 
-                // Mode de règlement obligatoire
-                if (!document.querySelector('input[name="reglement"]:checked')) {
-                    errors.push('Veuillez choisir un mode de règlement');
+                // Mode de règlement obligatoire (sauf pour dispositifs internes)
+                const dispositif = document.querySelector('input[name="dispositif"]:checked');
+                const dispositifsInternes = ['Déclic Sciences PO', 'Tremplin INGE', 'Tremplin PEPS', 'Tremplin Eloquence'];
+                if (dispositif && !dispositifsInternes.includes(dispositif.value)) {
+                    if (!document.querySelector('input[name="reglement"]:checked')) {
+                        errors.push('Veuillez choisir un mode de règlement');
+                    }
                 }
             }
 
@@ -1299,6 +1527,27 @@
             } else if (screen === 4) {
                 const tarif = getTarif();
                 document.getElementById('tarif-amount').textContent = tarif ? tarif + '€' : '--';
+                updateReglementSection();
+            }
+        }
+
+        function updateReglementSection() {
+            const dispositif = document.querySelector('input[name="dispositif"]:checked');
+            const sectionExterne = document.getElementById('section-reglement-externe');
+            const sectionInterne = document.getElementById('section-reglement-interne');
+            const dispositifsInternes = ['Déclic Sciences PO', 'Tremplin INGE', 'Tremplin PEPS', 'Tremplin Eloquence'];
+
+            // Réinitialiser
+            sectionExterne.style.display = 'none';
+            sectionInterne.style.display = 'none';
+
+            if (dispositif) {
+                // Afficher la section appropriée selon le dispositif
+                if (dispositif.value === 'PASS') {
+                    sectionExterne.style.display = 'block';
+                } else if (dispositifsInternes.includes(dispositif.value)) {
+                    sectionInterne.style.display = 'block';
+                }
             }
         }
 
@@ -1319,14 +1568,22 @@
         function submitForm() {
             const engagement = document.getElementById('engagement').checked;
             const reglement = document.querySelector('input[name="reglement"]:checked');
+            const dispositif = document.querySelector('input[name="dispositif"]:checked');
+            const dispositifsInternes = ['Déclic Sciences PO', 'Tremplin INGE', 'Tremplin PEPS', 'Tremplin Eloquence'];
 
-            if (!engagement || !reglement) {
-                alert('Veuillez confirmer votre engagement et choisir un mode de règlement');
+            if (!engagement) {
+                alert('Veuillez confirmer votre engagement');
+                return;
+            }
+
+            // Vérifier le mode de règlement seulement pour PASS (dispositif externe)
+            if (dispositif && !dispositifsInternes.includes(dispositif.value) && !reglement) {
+                alert('Veuillez choisir un mode de règlement');
                 return;
             }
 
             formData.engagement = 'Oui';
-            formData.modePaiement = reglement.value;
+            formData.modePaiement = reglement ? reglement.value : '';
 
             sendToAppsScript();
         }
@@ -1353,7 +1610,49 @@
             params.append('contactUrgence', document.getElementById('contact-urgence')?.value || '');
             params.append('consentementRGPD', document.getElementById('consentement-rgpd')?.checked ? 'Oui' : 'Non');
             params.append('restaurationInteret', document.querySelector('input[name="restauration-interet"]:checked')?.value || '');
-            params.append('restaurationNbRepas', document.getElementById('restauration-nb-repas')?.value || '');
+
+            // Récupérer les jours de restauration sélectionnés selon le dispositif et compter les repas
+            let totalRepas = 0;
+            const dispositif = document.querySelector('input[name="dispositif"]:checked')?.value;
+
+            if (dispositif === 'PASS') {
+                const joursOctobre = Array.from(document.querySelectorAll('input[name="resto-octobre"]:checked')).map(el => el.value);
+                const joursFevrier = Array.from(document.querySelectorAll('input[name="resto-fevrier"]:checked')).map(el => el.value);
+                const joursAvril = Array.from(document.querySelectorAll('input[name="resto-avril"]:checked')).map(el => el.value);
+
+                totalRepas = joursOctobre.length + joursFevrier.length + joursAvril.length;
+                params.append('restaurationOctobre', joursOctobre.join(', ') || '');
+                params.append('restaurationFevrier', joursFevrier.join(', ') || '');
+                params.append('restaurationAvril', joursAvril.join(', ') || '');
+            } else if (dispositif === 'Tremplin PEPS' || dispositif === 'Tremplin INGE') {
+                const joursOctobre = Array.from(document.querySelectorAll('input[name="resto-octobre-pi"]:checked')).map(el => el.value);
+                const joursFevrier = Array.from(document.querySelectorAll('input[name="resto-fevrier-pi"]:checked')).map(el => el.value);
+                const joursAvril = Array.from(document.querySelectorAll('input[name="resto-avril-pi"]:checked')).map(el => el.value);
+
+                totalRepas = joursOctobre.length + joursFevrier.length + joursAvril.length;
+                params.append('restaurationOctobre', joursOctobre.join(', ') || '');
+                params.append('restaurationFevrier', joursFevrier.join(', ') || '');
+                params.append('restaurationAvril', joursAvril.join(', ') || '');
+            } else if (dispositif === 'Tremplin Eloquence') {
+                const joursOctobre = Array.from(document.querySelectorAll('input[name="resto-octobre-e"]:checked')).map(el => el.value);
+                const joursFevrier = Array.from(document.querySelectorAll('input[name="resto-fevrier-e"]:checked')).map(el => el.value);
+
+                totalRepas = joursOctobre.length + joursFevrier.length;
+                params.append('restaurationOctobre', joursOctobre.join(', ') || '');
+                params.append('restaurationFevrier', joursFevrier.join(', ') || '');
+                params.append('restaurationAvril', '');
+            } else if (dispositif === 'Déclic Sciences PO') {
+                const joursOctobre = Array.from(document.querySelectorAll('input[name="resto-octobre-d"]:checked')).map(el => el.value);
+                const joursFevrier = Array.from(document.querySelectorAll('input[name="resto-fevrier-d"]:checked')).map(el => el.value);
+                const joursAvril = Array.from(document.querySelectorAll('input[name="resto-avril-d"]:checked')).map(el => el.value);
+
+                totalRepas = joursOctobre.length + joursFevrier.length + joursAvril.length;
+                params.append('restaurationOctobre', joursOctobre.join(', ') || '');
+                params.append('restaurationFevrier', joursFevrier.join(', ') || '');
+                params.append('restaurationAvril', joursAvril.join(', ') || '');
+            }
+
+            params.append('restaurationNbRepas', totalRepas > 0 ? totalRepas + ' repas' : '');
             params.append('engagement', formData.engagement || '');
             params.append('modePaiement', formData.modePaiement || '');
             params.append('tarif', getTarif() || '');
@@ -1394,6 +1693,21 @@
             }
         }
 
+        function downloadRib() {
+            const ribUrl = 'RIB.pdf';
+            window.open(ribUrl, '_blank');
+        }
+
+        function toggleVirementGroup() {
+            const virementSelected = document.querySelector('input[name="reglement"][value="Virement"]:checked');
+            const virementGroup = document.getElementById('groupe-virement');
+            if (virementSelected) {
+                virementGroup.style.display = 'block';
+            } else {
+                virementGroup.style.display = 'none';
+            }
+        }
+
         function updateTimestamp() {
             const now = new Date();
             const time = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
@@ -1414,10 +1728,18 @@
                 el.addEventListener('change', () => {
                     formData.dispositif = el.value;
                     updatePASSTariff();
+                    // Mettre à jour les dates de restauration si la section est visible
+                    if (document.getElementById('group-restauration-jours').style.display !== 'none') {
+                        updateRestourationDates(el);
+                    }
                 });
             });
 
             document.getElementById('lycee').addEventListener('change', handleLyceeChange);
+
+            document.querySelectorAll('input[name="reglement"]').forEach(el => {
+                el.addEventListener('change', toggleVirementGroup);
+            });
         });
     </script>
 </body>

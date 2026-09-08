@@ -423,6 +423,21 @@
                             </div>
                         </div>
                     </div>
+                    <h2 style="color: var(--primary); margin: 12px 0 12px 0; font-size: 16px;">Repas par Session</h2>
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <h3>Repas Octobre</h3>
+                            <div class="value" id="repasOctobreKpi">0</div>
+                        </div>
+                        <div class="kpi-card">
+                            <h3>Repas Février</h3>
+                            <div class="value" id="repasFvrierKpi">0</div>
+                        </div>
+                        <div class="kpi-card">
+                            <h3>Repas Avril</h3>
+                            <div class="value" id="repasAvrilKpi">0</div>
+                        </div>
+                    </div>
                     <h2 style="color: var(--primary); margin: 12px 0 12px 0; font-size: 16px;">Bilan Paiement</h2>
                     <div class="kpi-grid">
                         <div class="kpi-card">
@@ -488,16 +503,22 @@
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label>Restauration</label>
-                    <select id="filterRestauration" onchange="applyFilters()">
+                    <label>Niveau</label>
+                    <select id="filterNiveau" onchange="applyFilters()">
                         <option value="">Tous</option>
-                        <option value="Oui">Oui</option>
-                        <option value="Non">Non</option>
+                        <option value="1ère">1ère</option>
+                        <option value="Terminale">Terminale</option>
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label>PASS 1ère</label>
-                    <select id="filterPass1ere" onchange="applyFilters()">
+                    <label>Lycée</label>
+                    <select id="filterLycee" onchange="applyFilters()">
+                        <option value="">Tous</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Restauration</label>
+                    <select id="filterRestauration" onchange="applyFilters()">
                         <option value="">Tous</option>
                         <option value="Oui">Oui</option>
                         <option value="Non">Non</option>
@@ -524,12 +545,8 @@
                             <th>Dispositif</th>
                             <th>Lycée</th>
                             <th>Niveau</th>
-                            <th>PASS 1ère</th>
                             <th>Email lycéen</th>
                             <th>Téléphone</th>
-                            <th>Allergies</th>
-                            <th>Remarques</th>
-                            <th>Traitement</th>
                             <th>Urgence</th>
                             <th>Restauration</th>
                             <th>Nb Repas</th>
@@ -585,6 +602,7 @@
 
                 if (result.status === 'success') {
                     allData = result.data || [];
+                    populateLyceeFilter();
                     updateKPIs();
                     applyFilters();
                     document.getElementById('loading').style.display = 'none';
@@ -598,6 +616,30 @@
                 document.getElementById('errorMsg').style.display = 'block';
                 document.getElementById('loading').style.display = 'none';
             }
+        }
+
+        function populateLyceeFilter() {
+            const lycees = [...new Set(allData.map(r => r['Lycée d\'origine']).filter(Boolean))].sort();
+            const selectLycee = document.getElementById('filterLycee');
+            selectLycee.innerHTML = '<option value="">Tous</option>';
+            lycees.forEach(lycee => {
+                const option = document.createElement('option');
+                option.value = lycee;
+                option.textContent = lycee;
+                selectLycee.appendChild(option);
+            });
+        }
+
+        function countRepasBySession(sessionCol) {
+            return allData.reduce((sum, r) => {
+                const value = r[sessionCol];
+                if (value && value.trim().length > 0) {
+                    // Compter le nombre de jours en splittant par ", "
+                    const days = value.split(', ').filter(d => d.trim().length > 0);
+                    return sum + days.length;
+                }
+                return sum;
+            }, 0);
         }
 
         function updateKPIs() {
@@ -615,6 +657,15 @@
             document.getElementById('totalKpi').textContent = total;
             document.getElementById('restaurationOuiKpi').textContent = restaurationOui;
             document.getElementById('totalRepasKpi').textContent = totalRepas;
+
+            // Repas par session
+            const repasOctobre = countRepasBySession('Resto Octobre');
+            const repasFevrier = countRepasBySession('Resto Février');
+            const repasAvril = countRepasBySession('Resto Avril');
+
+            document.getElementById('repasOctobreKpi').textContent = repasOctobre;
+            document.getElementById('repasFvrierKpi').textContent = repasFevrier;
+            document.getElementById('repasAvrilKpi').textContent = repasAvril;
 
             // Paiement - normalize comparisons
             const isPaid = (val) => val && val.trim().toLowerCase() === 'payé';
@@ -703,19 +754,21 @@
 
         function applyFilters() {
             const dispositif = document.getElementById('filterDispositif').value;
+            const niveau = document.getElementById('filterNiveau').value;
+            const lycee = document.getElementById('filterLycee').value;
             const restauration = document.getElementById('filterRestauration').value;
-            const pass1ere = document.getElementById('filterPass1ere').value;
             const search = document.getElementById('searchInput').value.toLowerCase();
 
             const filtered = allData.filter(row => {
                 const matchDispositif = !dispositif || row['Dispositif'] === dispositif;
+                const matchNiveau = !niveau || row['Niveau'] === niveau;
+                const matchLycee = !lycee || row['Lycée d\'origine'] === lycee;
                 const matchRestauration = !restauration || row['Restauration'] === restauration;
-                const matchPass1ere = !pass1ere || row['PASS 1ERE'] === pass1ere;
                 const matchSearch = !search ||
                     row['Nom de l\'élève'].toLowerCase().includes(search) ||
                     row['Email élève'].toLowerCase().includes(search);
 
-                return matchDispositif && matchRestauration && matchPass1ere && matchSearch;
+                return matchDispositif && matchNiveau && matchLycee && matchRestauration && matchSearch;
             });
 
             renderTable(filtered);
@@ -733,12 +786,8 @@
                     <td>${row['Dispositif']}</td>
                     <td>${row['Lycée d\'origine']}</td>
                     <td>${row['Niveau']}</td>
-                    <td><span class="badge ${row['PASS 1ERE'] === 'Oui' ? 'badge-oui' : 'badge-non'}">${row['PASS 1ERE'] || '-'}</span></td>
                     <td>${row['Email élève']}</td>
                     <td>${row['Téléphone élève']}</td>
-                    <td class="medical-info">${row['Allergie'] || '-'}</td>
-                    <td class="medical-info">${row['Remarques'] || '-'}</td>
-                    <td class="medical-info">${row['Traitement'] || '-'}</td>
                     <td class="medical-info">${row['Urgence'] || '-'}</td>
                     <td><span class="badge ${row['Restauration'] === 'Oui' ? 'badge-oui' : 'badge-non'}">${row['Restauration']}</span></td>
                     <td>${row['Nb repas'] || '-'}</td>
@@ -752,10 +801,10 @@
 
         function exportToExcel() {
             const filtered = getFilteredData();
-            let csv = 'Nom,Dispositif,Lycée,Niveau,PASS 1ère,Email,Téléphone,Allergies,Remarques,Traitement,Urgence,Restauration,Nb Repas,Mode Paiement,Tarif\n';
+            let csv = 'Nom,Dispositif,Lycée,Niveau,Email,Téléphone,Urgence,Restauration,Nb Repas,Mode Paiement,Tarif\n';
 
             filtered.forEach(row => {
-                csv += `"${row['Nom de l\'élève']}","${row['Dispositif']}","${row['Lycée d\'origine']}","${row['Niveau']}","${row['PASS 1ERE']}","${row['Email élève']}","${row['Téléphone élève']}","${row['Allergie']}","${row['Remarques']}","${row['Traitement']}","${row['Urgence']}","${row['Restauration']}","${row['Nb repas']}","${row['Mode de règlement']}","${row['Tarif']}"\n`;
+                csv += `"${row['Nom de l\'élève']}","${row['Dispositif']}","${row['Lycée d\'origine']}","${row['Niveau']}","${row['Email élève']}","${row['Téléphone élève']}","${row['Urgence']}","${row['Restauration']}","${row['Nb repas']}","${row['Mode de règlement']}","${row['Tarif']}"\n`;
             });
 
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -767,19 +816,21 @@
 
         function getFilteredData() {
             const dispositif = document.getElementById('filterDispositif').value;
+            const niveau = document.getElementById('filterNiveau').value;
+            const lycee = document.getElementById('filterLycee').value;
             const restauration = document.getElementById('filterRestauration').value;
-            const pass1ere = document.getElementById('filterPass1ere').value;
             const search = document.getElementById('searchInput').value.toLowerCase();
 
             return allData.filter(row => {
                 const matchDispositif = !dispositif || row['Dispositif'] === dispositif;
+                const matchNiveau = !niveau || row['Niveau'] === niveau;
+                const matchLycee = !lycee || row['Lycée d\'origine'] === lycee;
                 const matchRestauration = !restauration || row['Restauration'] === restauration;
-                const matchPass1ere = !pass1ere || row['PASS 1ERE'] === pass1ere;
                 const matchSearch = !search ||
                     row['Nom de l\'élève'].toLowerCase().includes(search) ||
                     row['Email élève'].toLowerCase().includes(search);
 
-                return matchDispositif && matchRestauration && matchPass1ere && matchSearch;
+                return matchDispositif && matchNiveau && matchLycee && matchRestauration && matchSearch;
             });
         }
 
