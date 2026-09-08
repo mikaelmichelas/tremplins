@@ -462,16 +462,25 @@
                             </div>
                         </div>
                         <div class="kpi-card">
-                            <h3>Repas Octobre</h3>
-                            <div class="value" id="repasOctobreDashKpi">0</div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <h3 style="margin: 0;">Repas Octobre</h3>
+                                <div style="font-size: 13px; font-weight: bold; color: var(--primary);" id="totalOctobreDisplay"></div>
+                            </div>
+                            <div id="repasOctobreDetail" style="font-size: 12px; line-height: 1.6;"></div>
                         </div>
                         <div class="kpi-card">
-                            <h3>Repas Février</h3>
-                            <div class="value" id="repasFvrierDashKpi">0</div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <h3 style="margin: 0;">Repas Février</h3>
+                                <div style="font-size: 13px; font-weight: bold; color: var(--primary);" id="totalFevrierDisplay"></div>
+                            </div>
+                            <div id="repasFvrierDetail" style="font-size: 12px; line-height: 1.6;"></div>
                         </div>
                         <div class="kpi-card">
-                            <h3>Repas Avril</h3>
-                            <div class="value" id="repasAvrilDashKpi">0</div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <h3 style="margin: 0;">Repas Avril</h3>
+                                <div style="font-size: 13px; font-weight: bold; color: var(--primary);" id="totalAvrilDisplay"></div>
+                            </div>
+                            <div id="repasAvrilDetail" style="font-size: 12px; line-height: 1.6;"></div>
                         </div>
                     </div>
                 </div>
@@ -630,6 +639,35 @@
             }, 0);
         }
 
+        function getRepasByDay(sessionCol) {
+            const dayCount = {};
+            allData.forEach(r => {
+                const value = r[sessionCol];
+                if (value && value.trim().length > 0) {
+                    const days = value.split(', ').filter(d => d.trim().length > 0);
+                    days.forEach(day => {
+                        // Ignorer les timestamps (format ISO ou nombres)
+                        if (!day.match(/^\d{4}-\d{2}-\d{2}T/) && !day.match(/^\d+$/)) {
+                            dayCount[day] = (dayCount[day] || 0) + 1;
+                        }
+                    });
+                }
+            });
+            return dayCount;
+        }
+
+        function getSessionTotal(dayCount) {
+            return Object.values(dayCount).reduce((sum, count) => sum + count, 0);
+        }
+
+        function formatRepasDetail(dayCount) {
+            const sortedDays = Object.keys(dayCount).sort();
+            if (sortedDays.length === 0) {
+                return '<span style="color: #999;">Aucun repas</span>';
+            }
+            return sortedDays.map(day => `<div>${day}: <strong>${dayCount[day]}</strong> repas</div>`).join('');
+        }
+
         function updateKPIs() {
             const total = allData.length;
             const restaurationOui = allData.filter(r => r['Restauration'] === 'Oui').length;
@@ -734,9 +772,19 @@
 
             document.getElementById('restaOuiKpi').textContent = restaurationOuiCount;
             document.getElementById('totalRepasDashKpi').textContent = totalRepasBilan;
-            document.getElementById('repasOctobreDashKpi').textContent = repasOctobreBilan;
-            document.getElementById('repasFvrierDashKpi').textContent = repasFvrierBilan;
-            document.getElementById('repasAvrilDashKpi').textContent = repasAvrilBilan;
+
+            // Détail par jour pour chaque session
+            const octobreDetail = getRepasByDay('Resto Octobre');
+            const fevrierDetail = getRepasByDay('Resto Février');
+            const avrilDetail = getRepasByDay('Resto Avril');
+
+            document.getElementById('repasOctobreDetail').innerHTML = formatRepasDetail(octobreDetail);
+            document.getElementById('repasFvrierDetail').innerHTML = formatRepasDetail(fevrierDetail);
+            document.getElementById('repasAvrilDetail').innerHTML = formatRepasDetail(avrilDetail);
+
+            document.getElementById('totalOctobreDisplay').textContent = `${getSessionTotal(octobreDetail)} repas`;
+            document.getElementById('totalFevrierDisplay').textContent = `${getSessionTotal(fevrierDetail)} repas`;
+            document.getElementById('totalAvrilDisplay').textContent = `${getSessionTotal(avrilDetail)} repas`;
         }
 
         function applyFilters() {
