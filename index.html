@@ -1034,12 +1034,8 @@
                         </div>
 
                         <div style="margin-bottom: 20px; padding: 15px; background: var(--light); border-radius: 6px;">
-                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Février (3 jours)</h4>
+                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Février (2 jours)</h4>
                             <div style="display: flex; gap: 20px; flex-wrap: wrap; flex-direction: column;">
-                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                                    <input type="checkbox" name="resto-fevrier-d" value="Lundi 15 février">
-                                    <span style="font-size: 14px;">Lundi 15 février</span>
-                                </label>
                                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                                     <input type="checkbox" name="resto-fevrier-d" value="Mardi 16 février">
                                     <span style="font-size: 14px;">Mardi 16 février</span>
@@ -1566,21 +1562,13 @@
         }
 
         function submitForm() {
+            // Valider l'écran 4 avant d'envoyer
+            if (!validateCurrentScreen()) {
+                return;
+            }
+
             const engagement = document.getElementById('engagement').checked;
             const reglement = document.querySelector('input[name="reglement"]:checked');
-            const dispositif = document.querySelector('input[name="dispositif"]:checked');
-            const dispositifsInternes = ['Déclic Sciences PO', 'Tremplin INGE', 'Tremplin PEPS', 'Tremplin Eloquence'];
-
-            if (!engagement) {
-                alert('Veuillez confirmer votre engagement');
-                return;
-            }
-
-            // Vérifier le mode de règlement seulement pour PASS (dispositif externe)
-            if (dispositif && !dispositifsInternes.includes(dispositif.value) && !reglement) {
-                alert('Veuillez choisir un mode de règlement');
-                return;
-            }
 
             formData.engagement = 'Oui';
             formData.modePaiement = reglement ? reglement.value : '';
