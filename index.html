@@ -732,7 +732,10 @@
 
             <!-- ÉCRAN 2: INFOS ÉLÈVE (dynamique) -->
             <div class="screen" data-screen="2">
-                <h2>Informations de l'élève</h2>
+                <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px;">
+                    <h2 style="margin: 0;">Informations du lycéen</h2>
+                    <span id="dispositif-label" style="font-size: 13px; color: #666; font-style: italic;"></span>
+                </div>
                 <p>Complétez vos informations personnelles.</p>
 
                 <div class="form-group">
@@ -892,7 +895,7 @@
 
                 <div class="form-group">
                     <label>Êtes-vous intéressé par la restauration sur site ? <span class="required">*</span></label>
-                    <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Formule cafétéria : sandwich/salade - dessert - boisson (7€/repas) | Sessions : Octobre (2j) + Février (2j) + Avril (3j, repas partagé offert le dernier jour)</p>
+                    <p id="restauration-description" style="font-size: 13px; color: #666; margin-bottom: 12px;">Formule cafétéria : sandwich/salade - dessert - boisson (7€/repas)</p>
                     <div class="radio-group">
                         <label class="radio-item">
                             <input type="radio" name="restauration-interet" value="Oui" onchange="updateRestaurationOptions()">
@@ -948,7 +951,7 @@
                         </div>
 
                         <div style="margin-bottom: 20px; padding: 15px; background: var(--light); border-radius: 6px;">
-                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Avril (2 jours - repas partagé offert le dernier jour)</h4>
+                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Avril (2 jours - repas partagé offert mardi 13 avril)</h4>
                             <div style="display: flex; gap: 20px; flex-wrap: wrap; flex-direction: column;">
                                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                                     <input type="checkbox" name="resto-avril" value="Lundi 12 avril">
@@ -956,7 +959,7 @@
                                 </label>
                                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                                     <input type="checkbox" name="resto-avril" value="Mardi 13 avril">
-                                    <span style="font-size: 14px;">Mardi 13 avril</span>
+                                    <span style="font-size: 14px;">Mardi 13 avril <small style="color: #27ae60; font-size: 11px;">✓ Repas offert</small></span>
                                 </label>
                             </div>
                         </div>
@@ -993,7 +996,7 @@
                         </div>
 
                         <div style="margin-bottom: 20px; padding: 15px; background: var(--light); border-radius: 6px;">
-                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Avril (2 jours - repas partagé offert le dernier jour)</h4>
+                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Avril (2 jours)</h4>
                             <div style="display: flex; gap: 20px; flex-wrap: wrap; flex-direction: column;">
                                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                                     <input type="checkbox" name="resto-avril-pi" value="Lundi 12 avril">
@@ -1061,7 +1064,7 @@
                         </div>
 
                         <div style="margin-bottom: 20px; padding: 15px; background: var(--light); border-radius: 6px;">
-                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Avril (2 jours - repas partagé offert le dernier jour)</h4>
+                            <h4 style="color: var(--primary); margin-bottom: 12px; font-size: 14px; font-weight: 600;">🗓️ Avril (2 jours)</h4>
                             <div style="display: flex; gap: 20px; flex-wrap: wrap; flex-direction: column;">
                                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                                     <input type="checkbox" name="resto-avril-d" value="Lundi 12 avril">
@@ -1193,6 +1196,24 @@
 
         function goToDashboard() {
             window.location.href = './dashboard.html';
+        }
+
+        function updateDispositivDisplay() {
+            const selectedDisp = document.querySelector('input[name="dispositif"]:checked');
+            const dispLabel = document.getElementById('dispositif-label');
+            const restDescription = document.getElementById('restauration-description');
+
+            if (selectedDisp) {
+                // Afficher le nom du dispositif
+                dispLabel.textContent = `— ${selectedDisp.value}`;
+
+                // Mettre à jour la description de restauration
+                if (selectedDisp.value === 'PASS') {
+                    restDescription.textContent = 'Formule cafétéria : sandwich/salade - dessert - boisson (7€/repas) | Sessions : Octobre (2j) + Février (2j) + Avril (2j, repas partagé offert le mardi 13 avril)';
+                } else {
+                    restDescription.textContent = 'Formule cafétéria : sandwich/salade - dessert - boisson (7€/repas)';
+                }
+            }
         }
 
         function updatePASSTariff() {
@@ -1738,6 +1759,7 @@
                 el.addEventListener('change', () => {
                     formData.dispositif = el.value;
                     updatePASSTariff();
+                    updateDispositivDisplay();
                     // Mettre à jour les dates de restauration si la section est visible
                     if (document.getElementById('group-restauration-jours').style.display !== 'none') {
                         updateRestourationDates(el);
