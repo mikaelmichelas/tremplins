@@ -684,16 +684,16 @@
                     <label>Sélectionnez votre dispositif <span class="required">*</span></label>
                     <div class="radio-group">
                         <label class="radio-item">
-                            <input type="radio" name="dispositif" value="PASS" data-tarif="600" data-niveau="both" data-lycee="yes">
+                            <input type="radio" name="dispositif" value="PASS" data-tarif="500" data-niveau="both" data-lycee="yes">
                             <div class="radio-label">
                                 <strong id="pass-tariff">PASS (500€)</strong>
                                 </div>
                         </label>
 
                         <label class="radio-item">
-                            <input type="radio" name="dispositif" value="Déclic Sciences PO" data-tarif="250" data-niveau="both" data-lycee="no">
+                            <input type="radio" name="dispositif" value="Déclic Sciences PO" data-tarif="300" data-niveau="both" data-lycee="no">
                             <div class="radio-label">
-                                <strong>Déclic Sciences PO (30€)</strong>
+                                <strong>Déclic Sciences PO (300€)</strong>
                                 <small>1ère et Terminale - Élèves Saint Victor</small>
                             </div>
                         </label>
@@ -1176,7 +1176,7 @@
         let formData = {};
         const tarifs = {
             'PASS': 500,
-            'Déclic Sciences PO': 250,
+            'Déclic Sciences PO': 300,
             'Tremplin INGE': 300,
             'Tremplin PEPS': 150,
             'Tremplin Eloquence': 200
@@ -1218,13 +1218,8 @@
         function updatePASSTariff() {
             const passRadio = document.querySelector('input[name="dispositif"][value="PASS"]');
             const passLabel = document.getElementById('pass-tariff');
-            const lyceeSelect = document.getElementById('lycee');
 
-            const selectedLycee = lyceeSelect.value;
-            const partnersAndHome = ['Saint Victor', 'Chabrillan', 'Bourg Saint Andéol'];
-            const isPaid500 = partnersAndHome.includes(selectedLycee);
-
-            const tarif = isPaid500 ? 500 : 600;
+            const tarif = 500;
             if (passRadio) {
                 passLabel.textContent = `PASS (${tarif}€)`;
                 passRadio.dataset.tarif = tarif;
