@@ -250,10 +250,10 @@ function downloadPDF() {
     const header = document.querySelector('header');
 
     const opt = {
-        margin: 10,
+        margin: 8,
         filename: 'Session1_Planning.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
+        html2canvas: { scale: 1 },
         jsPDF: { orientation: 'landscape', unit: 'mm', format: 'a4' }
     };
 
@@ -261,6 +261,22 @@ function downloadPDF() {
     const container = document.createElement('div');
     container.innerHTML = header.outerHTML + element.outerHTML;
     container.style.background = '#fff';
+    container.style.maxWidth = '1000px';
+    container.style.overflow = 'hidden';
+
+    // Forcer l'ajustement du grid dans le PDF
+    const scrollDiv = container.querySelector('.scroll');
+    if (scrollDiv) {
+        scrollDiv.style.overflow = 'visible';
+        scrollDiv.style.maxWidth = '100%';
+    }
+    const grid = container.querySelector('.grid');
+    if (grid) {
+        grid.style.minWidth = 'auto';
+        grid.style.width = '100%';
+        grid.style.transform = 'scale(0.85)';
+        grid.style.transformOrigin = 'top left';
+    }
 
     html2pdf().set(opt).from(container).save();
 }
