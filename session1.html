@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Session 1 - Tremplins SUP</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
@@ -138,12 +139,13 @@ footer strong { color: var(--text); }
     </div>
     <div class="header-actions">
         <a href="./dashboard.html">← Dashboard</a>
+        <button type="button" onclick="downloadPDF()">📥 Télécharger PDF</button>
         <button type="button" onclick="window.print()">Imprimer</button>
         <button type="button" onclick="toggleTheme()">Mode sombre</button>
     </div>
 </header>
 
-<main class="content">
+<main class="content" id="content-to-pdf">
     <div class="chips">
         <div class="chip"><strong>82</strong> élèves</div>
         <div class="chip"><strong>68</strong> repas réservés</div>
@@ -242,6 +244,27 @@ function toggleTheme() {
     document.body.classList.toggle('dark-mode');
     try { localStorage.setItem('dashboardTheme', document.body.classList.contains('dark-mode') ? 'dark' : 'light'); } catch (e) {}
 }
+
+function downloadPDF() {
+    const element = document.getElementById('content-to-pdf');
+    const header = document.querySelector('header');
+
+    const opt = {
+        margin: 10,
+        filename: 'Session1_Planning.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { orientation: 'landscape', unit: 'mm', format: 'a4' }
+    };
+
+    // Créer une copie contenant le header et le contenu
+    const container = document.createElement('div');
+    container.innerHTML = header.outerHTML + element.outerHTML;
+    container.style.background = '#fff';
+
+    html2pdf().set(opt).from(container).save();
+}
+
 try { if (localStorage.getItem('dashboardTheme') === 'dark') document.body.classList.add('dark-mode'); } catch (e) {}
 </script>
 </body>
