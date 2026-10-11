@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 1 - Tremplins SUP</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+    --primary: #003d7a;
+    --secondary: #d84aa8;
+    --bg: #f6f7fa;
+    --card: #ffffff;
+    --text: #1a2233;
+    --muted: #4a5468;
+    --line: #c3cad8;
+    --sub: #dfe5ef;
+    --pass: #8a1a60;   --pass-bg: #fbe6f1;
+    --inge: #003d7a;   --inge-bg: #e2eaf6;
+    --scipo: #0b5e5e;  --scipo-bg: #dcf0ee;
+    --elo: #8f4a0c;    --elo-bg: #fcebd9;
+    --peps: #4f2c7a;   --peps-bg: #ece4f6;
+}
+body.dark-mode {
+    --bg: #1a1a1a; --card: #2a2a2a; --text: #f0f0f0; --muted: #b8bfcc; --line: #555; --sub: #333;
+    --pass-bg: #3d2032; --inge-bg: #1f2c40; --scipo-bg: #1b3433; --elo-bg: #3d2c1c; --peps-bg: #2e2440;
+    --pass: #f2a6d0; --inge: #9ec0ec; --scipo: #8fd6d0; --elo: #f3b77a; --peps: #c9adef;
+}
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+header .kicker { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: .85; font-weight: 600; }
+header h1 { font-size: 22px; margin-top: 4px; }
+.header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.header-actions a, .header-actions button {
+    padding: 8px 16px;
+    background: rgba(255,255,255,.2);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,.5);
+    border-radius: 4px;
+    font-size: 13px;
+    text-decoration: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+.header-actions a:hover, .header-actions button:hover { background: rgba(255,255,255,.3); }
+
+.content { max-width: 1600px; margin: 0 auto; padding: 20px; }
+
+.chips { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+.chip { background: var(--card); border-left: 3px solid var(--secondary); border-radius: 6px; padding: 8px 14px; font-size: 13px; box-shadow: 0 1px 4px rgba(0,0,0,.05); }
+.chip strong { color: var(--primary); font-size: 16px; }
+body.dark-mode .chip strong { color: #9ec0ec; }
+
+.scroll { overflow-x: auto; padding-bottom: 6px; }
+.grid {
+    display: grid;
+    grid-template-columns: 190px repeat(6, minmax(150px, 1fr));
+    gap: 6px;
+    min-width: 1100px;
+}
+.day {
+    grid-column: span 2;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 8px 8px 0 0;
+    padding: 10px 14px;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.meals { background: #fff; color: var(--primary); font-size: 12px; padding: 3px 10px; border-radius: 999px; }
+.half { background: var(--sub); padding: 6px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+
+.label {
+    background: var(--card);
+    border-left: 5px solid var(--c);
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.05);
+}
+.label b { display: block; font-size: 15px; }
+.label span { font-size: 12px; color: var(--muted); }
+
+.slot {
+    background: var(--bg-c);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-height: 96px;
+}
+.slot .time { font-size: 12px; font-weight: 600; color: var(--c); }
+.slot .what { font-weight: 700; font-size: 14px; }
+.slot .who { font-size: 12px; color: var(--muted); }
+.room { margin-top: auto; align-self: flex-start; background: var(--c); color: var(--card); font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+.empty { border: 1px dashed var(--line); border-radius: 8px; }
+
+.joint { background: var(--card); border: 2px solid var(--secondary); grid-row: span 2; }
+.joint .tag { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--secondary); }
+.joint .room { background: var(--secondary); color: #fff; }
+
+.pass  { --c: var(--pass);  --bg-c: var(--pass-bg); }
+.inge  { --c: var(--inge);  --bg-c: var(--inge-bg); }
+.scipo { --c: var(--scipo); --bg-c: var(--scipo-bg); }
+.elo   { --c: var(--elo);   --bg-c: var(--elo-bg); }
+.peps  { --c: var(--peps);  --bg-c: var(--peps-bg); }
+
+footer { margin-top: 16px; font-size: 13px; color: var(--muted); display: flex; gap: 20px; flex-wrap: wrap; }
+footer strong { color: var(--text); }
+
+@media print {
+    header .header-actions { display: none; }
+    body { background: #fff; }
+    .scroll { overflow: visible; }
+}
+</style>
+</head>
+<body>
+<header>
+    <div>
+        <div class="kicker">Lycée Saint Victor · Tremplins SUP</div>
+        <h1>Session 1 · du lundi 19 au mercredi 21 octobre</h1>
+    </div>
+    <div class="header-actions">
+        <a href="./dashboard.html">← Dashboard</a>
+        <button type="button" onclick="window.print()">Imprimer</button>
+        <button type="button" onclick="toggleTheme()">Mode sombre</button>
+    </div>
+</header>
+
+<main class="content">
+    <div class="chips">
+        <div class="chip"><strong>74</strong> élèves</div>
+        <div class="chip"><strong>68</strong> repas réservés</div>
+        <div class="chip">1er étage · <strong>C102 à C106</strong></div>
+        <div class="chip">Salles libres · <strong>C101, C107</strong></div>
+    </div>
+
+    <div class="scroll">
+    <div class="grid">
+        <div></div>
+        <div class="day">Lundi 19 octobre <span class="meals">21 repas</span></div>
+        <div class="day">Mardi 20 octobre <span class="meals">27 repas</span></div>
+        <div class="day">Mercredi 21 octobre <span class="meals">20 repas</span></div>
+
+        <div></div>
+        <div class="half">Matin</div><div class="half">Après-midi</div>
+        <div class="half">Matin</div><div class="half">Après-midi</div>
+        <div class="half">Matin</div><div class="half">Après-midi</div>
+
+        <!-- PASS 1ère -->
+        <div class="label pass"><b>PASS 1ère</b><span>18 élèves</span></div>
+        <div class="slot pass"><div class="time">9h30 – 12h30</div><div class="what">Étudiant Avicenne</div><div class="room">C106</div></div>
+        <div class="slot pass"><div class="time">13h30 – 16h30</div><div class="what">Étudiant Avicenne</div><div class="room">C106</div></div>
+        <div class="slot pass"><div class="time">9h30 – 12h30</div><div class="what">Étudiant Avicenne</div><div class="room">C106</div></div>
+        <div class="slot pass"><div class="time">13h30 – 16h30</div><div class="what">Étudiant Avicenne</div><div class="room">C106</div></div>
+        <div class="slot pass"><div class="time">9h30 – 12h30</div><div class="what">Étudiant Avicenne</div><div class="room">C106</div></div>
+        <div class="slot pass"><div class="time">13h30 – 16h30</div><div class="what">Étudiant Avicenne</div><div class="room">C106</div></div>
+
+        <!-- PASS Terminale -->
+        <div class="label pass"><b>PASS Terminale</b><span>11 élèves</span></div>
+        <div class="slot pass"><div class="time">9h30 – 12h30</div><div class="what">Étudiant Avicenne</div><div class="room">C105</div></div>
+        <div class="slot pass"><div class="time">13h30 – 16h30</div><div class="what">Étudiant Avicenne</div><div class="room">C105</div></div>
+        <div class="slot pass"><div class="time">9h30 – 12h30</div><div class="what">Étudiant Avicenne</div><div class="room">C105</div></div>
+        <div class="slot pass"><div class="time">13h30 – 16h30</div><div class="what">Étudiant Avicenne</div><div class="room">C105</div></div>
+        <div class="slot pass"><div class="time">9h30 – 12h30</div><div class="what">Étudiant Avicenne</div><div class="room">C105</div></div>
+        <div class="slot pass"><div class="time">13h30 – 16h30</div><div class="what">Étudiant Avicenne</div><div class="room">C105</div></div>
+
+        <!-- Ingé -->
+        <div class="label inge"><b>Tremplin Ingé</b><span>16 élèves · Terminale</span></div>
+        <div class="slot inge"><div class="time">9h – 12h</div><div class="what">Physique-chimie</div><div class="who">Mme Follin · M. Ramirez</div><div class="room">C102</div></div>
+        <div class="slot inge"><div class="time">13h – 16h</div><div class="what">Maths</div><div class="who">Mme Chambron</div><div class="room">C102</div></div>
+        <div class="slot inge"><div class="time">9h – 12h</div><div class="what">Maths</div><div class="who">Mme Chambron</div><div class="room">C102</div></div>
+        <div class="slot inge"><div class="time">13h – 16h</div><div class="what">Physique-chimie</div><div class="who">Mme Follin · M. Ramirez</div><div class="room">C102</div></div>
+        <div class="empty"></div>
+        <div class="empty"></div>
+
+        <!-- Déclic -->
+        <div class="label scipo"><b>Déclic Sciences Po</b><span>11 élèves · 1ère et Tle</span></div>
+        <div class="empty"></div>
+        <div class="empty"></div>
+        <div class="slot scipo"><div class="time">9h – 12h</div><div class="what">Questions contemporaines</div><div class="who">M. Durif</div><div class="room">C103</div></div>
+        <div class="empty"></div>
+        <div class="slot scipo"><div class="time">9h – 12h</div><div class="what">Questions contemporaines</div><div class="who">M. Durif</div><div class="room">C103</div></div>
+        <div class="empty"></div>
+
+        <!-- Éloquence -->
+        <div class="label elo"><b>Éloquence</b><span>10 élèves · 1ère et Tle</span></div>
+        <div class="slot joint">
+            <div class="tag">Éloquence + PEPS</div>
+            <div class="time" style="color: var(--secondary)">9h30 – 10h00</div>
+            <div class="what">Accueil</div>
+            <div class="who">Mme Nocera · Mme Reymond</div>
+            <div class="time" style="color: var(--secondary); margin-top: 6px">10h00 – 12h00</div>
+            <div class="what">M. Darnaud</div>
+            <div class="who">Sénateur de l'Ardèche</div>
+            <div class="room">C104 · 18 élèves</div>
+        </div>
+        <div class="slot joint">
+            <div class="tag">Éloquence + PEPS</div>
+            <div class="time" style="color: var(--secondary)">13h – 16h</div>
+            <div class="what">Intervention d'un magistrat</div>
+            <div class="room">C104 · 18 élèves</div>
+        </div>
+        <div class="empty"></div>
+        <div class="empty"></div>
+        <div class="empty"></div>
+        <div class="empty"></div>
+
+        <!-- PEPS -->
+        <div class="label peps"><b>PEPS</b><span>8 élèves · Terminale</span></div>
+        <div class="slot peps"><div class="time">9h – 12h</div><div class="what">English morning</div><div class="who">Mme Gaudenz</div><div class="room">C104</div></div>
+        <div class="slot peps"><div class="time">13h – 16h</div><div class="what">Projet</div><div class="who">M. Miguet</div><div class="room">C104</div></div>
+        <div class="empty"></div>
+        <div class="empty"></div>
+    </div>
+    </div>
+
+    <footer>
+        <span><strong>Cases en pointillés :</strong> pas de séance</span>
+        <span><strong>Cadre rose :</strong> séance commune Éloquence + PEPS</span>
+    </footer>
+</main>
+
+<script>
+function toggleTheme() {
+    document.body.classList.toggle('dark-mode');
+    try { localStorage.setItem('dashboardTheme', document.body.classList.contains('dark-mode') ? 'dark' : 'light'); } catch (e) {}
+}
+try { if (localStorage.getItem('dashboardTheme') === 'dark') document.body.classList.add('dark-mode'); } catch (e) {}
+</script>
+</body>
+</html>
