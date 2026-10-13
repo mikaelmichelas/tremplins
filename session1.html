@@ -250,7 +250,7 @@ function downloadPDF() {
     const header = document.querySelector('header');
 
     const opt = {
-        margin: 3,
+        margin: 2,
         filename: 'Session1_Planning.pdf',
         image: { type: 'jpeg', quality: 0.95 },
         html2canvas: { scale: 1, useCORS: true },
@@ -269,40 +269,47 @@ function downloadPDF() {
     // Réduire la taille du header pour le PDF
     const headerCopy = container.querySelector('header');
     if (headerCopy) {
-        headerCopy.style.padding = '6px 10px';
-        headerCopy.style.gap = '6px';
+        headerCopy.style.padding = '2px 8px';
+        headerCopy.style.gap = '2px';
         headerCopy.style.minHeight = 'auto';
+        // Masquer les boutons d'action
+        const headerActions = headerCopy.querySelector('.header-actions');
+        if (headerActions) {
+            headerActions.style.display = 'none';
+        }
     }
 
     const headerTitle = container.querySelector('header h1');
     if (headerTitle) {
-        headerTitle.style.fontSize = '14px';
-        headerTitle.style.marginTop = '2px';
+        headerTitle.style.fontSize = '12px';
+        headerTitle.style.marginTop = '0px';
+        headerTitle.style.lineHeight = '1';
     }
 
     const headerKicker = container.querySelector('header .kicker');
     if (headerKicker) {
-        headerKicker.style.fontSize = '10px';
+        headerKicker.style.fontSize = '8px';
+        headerKicker.style.letterSpacing = '0px';
     }
 
     // Réduire le contenu
     const content = container.querySelector('.content');
     if (content) {
-        content.style.padding = '8px 10px';
+        content.style.padding = '4px 8px';
         content.style.margin = '0';
     }
 
     // Réduire les chips
     const chips = container.querySelector('.chips');
     if (chips) {
-        chips.style.marginBottom = '4px';
-        chips.style.gap = '6px';
+        chips.style.marginBottom = '2px';
+        chips.style.gap = '4px';
     }
 
     const chipElements = container.querySelectorAll('.chip');
     chipElements.forEach(chip => {
-        chip.style.padding = '4px 8px';
-        chip.style.fontSize = '10px';
+        chip.style.padding = '2px 6px';
+        chip.style.fontSize = '8px';
     });
 
     // Ajuster le grid pour le PDF
@@ -317,49 +324,52 @@ function downloadPDF() {
     if (grid) {
         grid.style.minWidth = 'auto';
         grid.style.width = '100%';
-        grid.style.gap = '2px';
-        grid.style.gridTemplateColumns = '140px repeat(6, minmax(110px, 1fr))';
-        grid.style.fontSize = '11px';
+        grid.style.gap = '1px';
+        grid.style.gridTemplateColumns = '130px repeat(6, minmax(100px, 1fr))';
+        grid.style.fontSize = '10px';
     }
 
     // Réduire les slots
     const slots = container.querySelectorAll('.slot');
     slots.forEach(slot => {
-        slot.style.minHeight = '50px';
-        slot.style.padding = '6px 8px';
+        slot.style.minHeight = '54px';
+        slot.style.padding = '6px 7px';
         slot.style.gap = '2px';
     });
 
     // Réduire les labels
     const labels = container.querySelectorAll('.label');
     labels.forEach(label => {
-        label.style.padding = '8px';
+        label.style.padding = '5px 6px';
+        label.style.minHeight = '40px';
+        label.style.justifyContent = 'center';
     });
 
     const labelB = container.querySelectorAll('.label b');
     labelB.forEach(b => {
-        b.style.fontSize = '12px';
+        b.style.fontSize = '10px';
+        b.style.marginBottom = '1px';
     });
 
     const labelSpan = container.querySelectorAll('.label span');
     labelSpan.forEach(span => {
-        span.style.fontSize = '10px';
+        span.style.fontSize = '8px';
     });
 
     // Réduire les texts dans les slots
     const slotTime = container.querySelectorAll('.slot .time');
     slotTime.forEach(time => {
-        time.style.fontSize = '10px';
+        time.style.fontSize = '11px';
     });
 
     const slotWhat = container.querySelectorAll('.slot .what');
     slotWhat.forEach(what => {
-        what.style.fontSize = '11px';
+        what.style.fontSize = '12px';
     });
 
     const slotWho = container.querySelectorAll('.slot .who');
     slotWho.forEach(who => {
-        who.style.fontSize = '9px';
+        who.style.fontSize = '10px';
     });
 
     const room = container.querySelectorAll('.room');
@@ -371,22 +381,39 @@ function downloadPDF() {
     // Réduire les days et half
     const days = container.querySelectorAll('.day');
     days.forEach(day => {
-        day.style.padding = '6px 8px';
-        day.style.fontSize = '11px';
+        day.style.padding = '3px 6px';
+        day.style.fontSize = '9px';
+        day.style.minHeight = '24px';
+        day.style.alignItems = 'center';
+    });
+
+    const dayMeals = container.querySelectorAll('.day .meals');
+    dayMeals.forEach(meal => {
+        meal.style.fontSize = '8px';
+        meal.style.padding = '1px 6px';
     });
 
     const halfs = container.querySelectorAll('.half');
     halfs.forEach(half => {
-        half.style.padding = '4px 6px';
-        half.style.fontSize = '9px';
+        half.style.padding = '2px 4px';
+        half.style.fontSize = '7px';
+        half.style.minHeight = '20px';
+        half.style.display = 'flex';
+        half.style.alignItems = 'center';
+        half.style.justifyContent = 'center';
     });
 
     // Réduire le footer
     const footer = container.querySelector('footer');
     if (footer) {
-        footer.style.marginTop = '4px';
-        footer.style.fontSize = '10px';
-        footer.style.gap = '10px';
+        footer.style.marginTop = '2px';
+        footer.style.fontSize = '8px';
+        footer.style.gap = '8px';
+        footer.style.display = 'flex';
+        const footerSpans = footer.querySelectorAll('span');
+        footerSpans.forEach(span => {
+            span.style.whiteSpace = 'nowrap';
+        });
     }
 
     html2pdf().set(opt).from(container).save();
