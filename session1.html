@@ -250,10 +250,10 @@ function downloadPDF() {
     const header = document.querySelector('header');
 
     const opt = {
-        margin: 5,
+        margin: 3,
         filename: 'Session1_Planning.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 1 },
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: { scale: 1, useCORS: true },
         jsPDF: { orientation: 'landscape', unit: 'mm', format: 'a4', compress: true }
     };
 
@@ -261,37 +261,132 @@ function downloadPDF() {
     const container = document.createElement('div');
     container.innerHTML = header.outerHTML + element.outerHTML;
     container.style.background = '#fff';
-    container.style.maxWidth = '100%';
-    container.style.overflow = 'hidden';
+    container.style.width = '100%';
+    container.style.maxWidth = 'none';
+    container.style.padding = '0';
+    container.style.margin = '0';
 
     // Réduire la taille du header pour le PDF
     const headerCopy = container.querySelector('header');
     if (headerCopy) {
-        headerCopy.style.padding = '8px';
-        headerCopy.style.fontSize = '13px';
+        headerCopy.style.padding = '6px 10px';
+        headerCopy.style.gap = '6px';
+        headerCopy.style.minHeight = 'auto';
     }
 
-    // Forcer l'ajustement du grid dans le PDF
-    const scrollDiv = container.querySelector('.scroll');
-    if (scrollDiv) {
-        scrollDiv.style.overflow = 'visible';
-        scrollDiv.style.maxWidth = '100%';
+    const headerTitle = container.querySelector('header h1');
+    if (headerTitle) {
+        headerTitle.style.fontSize = '14px';
+        headerTitle.style.marginTop = '2px';
     }
-    const grid = container.querySelector('.grid');
-    if (grid) {
-        grid.style.minWidth = 'auto';
-        grid.style.width = '100%';
-        grid.style.gap = '3px';
-        grid.style.transform = 'scale(0.68)';
-        grid.style.transformOrigin = 'top left';
-        grid.style.marginBottom = '-120px';
+
+    const headerKicker = container.querySelector('header .kicker');
+    if (headerKicker) {
+        headerKicker.style.fontSize = '10px';
+    }
+
+    // Réduire le contenu
+    const content = container.querySelector('.content');
+    if (content) {
+        content.style.padding = '8px 10px';
+        content.style.margin = '0';
     }
 
     // Réduire les chips
     const chips = container.querySelector('.chips');
     if (chips) {
-        chips.style.marginBottom = '6px';
-        chips.style.fontSize = '12px';
+        chips.style.marginBottom = '4px';
+        chips.style.gap = '6px';
+    }
+
+    const chipElements = container.querySelectorAll('.chip');
+    chipElements.forEach(chip => {
+        chip.style.padding = '4px 8px';
+        chip.style.fontSize = '10px';
+    });
+
+    // Ajuster le grid pour le PDF
+    const scrollDiv = container.querySelector('.scroll');
+    if (scrollDiv) {
+        scrollDiv.style.overflow = 'visible';
+        scrollDiv.style.paddingBottom = '0';
+        scrollDiv.style.margin = '0';
+    }
+
+    const grid = container.querySelector('.grid');
+    if (grid) {
+        grid.style.minWidth = 'auto';
+        grid.style.width = '100%';
+        grid.style.gap = '2px';
+        grid.style.gridTemplateColumns = '140px repeat(6, minmax(110px, 1fr))';
+        grid.style.fontSize = '11px';
+    }
+
+    // Réduire les slots
+    const slots = container.querySelectorAll('.slot');
+    slots.forEach(slot => {
+        slot.style.minHeight = '50px';
+        slot.style.padding = '6px 8px';
+        slot.style.gap = '2px';
+    });
+
+    // Réduire les labels
+    const labels = container.querySelectorAll('.label');
+    labels.forEach(label => {
+        label.style.padding = '8px';
+    });
+
+    const labelB = container.querySelectorAll('.label b');
+    labelB.forEach(b => {
+        b.style.fontSize = '12px';
+    });
+
+    const labelSpan = container.querySelectorAll('.label span');
+    labelSpan.forEach(span => {
+        span.style.fontSize = '10px';
+    });
+
+    // Réduire les texts dans les slots
+    const slotTime = container.querySelectorAll('.slot .time');
+    slotTime.forEach(time => {
+        time.style.fontSize = '10px';
+    });
+
+    const slotWhat = container.querySelectorAll('.slot .what');
+    slotWhat.forEach(what => {
+        what.style.fontSize = '11px';
+    });
+
+    const slotWho = container.querySelectorAll('.slot .who');
+    slotWho.forEach(who => {
+        who.style.fontSize = '9px';
+    });
+
+    const room = container.querySelectorAll('.room');
+    room.forEach(r => {
+        r.style.fontSize = '9px';
+        r.style.padding = '1px 5px';
+    });
+
+    // Réduire les days et half
+    const days = container.querySelectorAll('.day');
+    days.forEach(day => {
+        day.style.padding = '6px 8px';
+        day.style.fontSize = '11px';
+    });
+
+    const halfs = container.querySelectorAll('.half');
+    halfs.forEach(half => {
+        half.style.padding = '4px 6px';
+        half.style.fontSize = '9px';
+    });
+
+    // Réduire le footer
+    const footer = container.querySelector('footer');
+    if (footer) {
+        footer.style.marginTop = '4px';
+        footer.style.fontSize = '10px';
+        footer.style.gap = '10px';
     }
 
     html2pdf().set(opt).from(container).save();
